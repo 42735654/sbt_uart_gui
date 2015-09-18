@@ -2,12 +2,13 @@
 #define UART_HANDLER_H
 #include <QSerialPort>
 #include <QSerialPortInfo>
-class uart_handler
+class uart_handler:public QSerialPort
 {
 public:
     uart_handler();
-    virtual uart_send();
-    virtual uart_recvie();
+    virtual ~uart_handler() = 0;
+    virtual void uart_send(){}
+    virtual void uart_recvie(){}
 };
 
 #endif // UART_HANDLER_H

@@ -3,16 +3,15 @@
 
 #include <QMainWindow>
 #include "uart_gui.h"
-namespace Ui {
-class sbtwkq_uart_gui;
-}
+#include "uart_handler.h"
+#include "sbt_uart_handler.h"
 
-class sbtwkq_uart_gui : public QMainWindow, public uart_gui
+class sbtwkq_uart_gui : public uart_gui
 {
     Q_OBJECT
 
 public:
-    explicit sbtwkq_uart_gui(QWidget *parent = 0);
+    explicit sbtwkq_uart_gui(uart_handler *hd);
     ~sbtwkq_uart_gui();
 
 public:
@@ -22,8 +21,6 @@ public:
     void ui_refresh();
     void uart_data_handle();
     void send_uart_data();
-private:
-    Ui::sbtwkq_uart_gui *ui;
 };
 
 #endif // SBTWKQ_UART_GUI_H

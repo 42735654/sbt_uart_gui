@@ -2,14 +2,14 @@
 #define SBT_UART_HANDLER_H
 #include <QSerialPort>
 #include <QSerialPortInfo>
-
-class sbt_uart_handler:public QSerialPort
+#include <uart_handler.h>
+class sbt_uart_handler:public uart_handler
 {
 public:
     sbt_uart_handler();
-
-    uart_send();
-    uart_recvie();
+    ~sbt_uart_handler();
+    void uart_send();
+    void uart_recvie();
 };
 
 #endif // SBT_UART_HANDLER_H

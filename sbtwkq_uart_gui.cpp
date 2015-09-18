@@ -1,14 +1,41 @@
 #include "sbtwkq_uart_gui.h"
-#include "ui_sbtwkq_uart_gui.h"
 
-sbtwkq_uart_gui::sbtwkq_uart_gui(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::sbtwkq_uart_gui)
+sbtwkq_uart_gui::sbtwkq_uart_gui(uart_handler *hd) :
+    uart_gui(hd)
 {
-    ui->setupUi(this);
+
 }
 
 sbtwkq_uart_gui::~sbtwkq_uart_gui()
 {
-    delete ui;
+
+}
+void sbtwkq_uart_gui::set_ui_by_arg()
+{
+
+}
+
+void sbtwkq_uart_gui::set_arg_by_ui()
+{
+
+}
+
+void sbtwkq_uart_gui::set_arg_by_uart()
+{
+
+}
+
+void sbtwkq_uart_gui::ui_refresh()
+{
+
+}
+
+void sbtwkq_uart_gui::uart_data_handle()
+{
+
+}
+
+void sbtwkq_uart_gui::send_uart_data()
+{
+
 }

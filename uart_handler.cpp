@@ -5,3 +5,7 @@ uart_handler::uart_handler()
 
 }
 
+uart_handler::~uart_handler()
+{
+
+}
