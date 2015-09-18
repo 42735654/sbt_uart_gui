@@ -10,6 +10,9 @@ public:
     ~sbt_uart_handler();
     void uart_send();
     void uart_recvie();
+    void init_serial_param();
+public slots:
+    void serialRead(){}
 };
 
 #endif // SBT_UART_HANDLER_H

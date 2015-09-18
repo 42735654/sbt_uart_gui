@@ -11,6 +11,7 @@
 #include <QWidget>
 #include <QStackedLayout>
 #include <QFormLayout>
+#include <QDebug>
 #define MAX_COL     24
 #define MAX_ROWS    16
 #define TEXT_BROWSER_COL        (MAX_COL * 2 / 3)
@@ -18,6 +19,8 @@
 
 class uart_gui:public QMainWindow
 {
+    Q_OBJECT
+
     QComboBox *port_index;
     QWidget *for_cert;
     QLabel *uart_stat;
@@ -34,8 +37,9 @@ public:
     void init_widgets();
     void init_layout();
     void add_widgets(QWidget *any_widgets, bool full_row = false);
-    init_serial_port();
+    void init_serial_port();
 
+    void init_connections();
     virtual ~uart_gui() = 0;
     virtual void set_ui_by_arg(){}
     virtual void set_arg_by_ui(){}
@@ -44,6 +48,8 @@ public:
     virtual void uart_data_handle(){}
     virtual void send_uart_data(){}
 
+public slots:
+    void on_port_index_currentIndexChanged(const QString &arg1);
 protected:
     uart_handler *uhd;
 };

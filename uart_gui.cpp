@@ -6,9 +6,17 @@ uart_gui::uart_gui(uart_handler *hd)
     count = 0;
     role = QFormLayout::LabelRole;
     init_widgets();
+    init_connections();
     init_layout();
     this->resize(800, 480);
+    init_serial_port();
+
 }
+void uart_gui::init_connections()
+{
+    connect(port_index, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_port_index_currentIndexChanged(QString)));
+}
+
 void uart_gui::init_widgets()
 {
     port_index = new QComboBox;
@@ -23,6 +31,29 @@ void uart_gui::init_widgets()
     main_lay = new QGridLayout;
     for_cert = new QWidget;
     widgets_layout = new QFormLayout;
+}
+void uart_gui::init_serial_port()
+{
+    QList<QSerialPortInfo>  infos = QSerialPortInfo::availablePorts();
+    if(infos.isEmpty())
+    {
+        port_index->addItem("没有可用串口");
+        return;
+    }
+    foreach (QSerialPortInfo info, infos) {
+        port_index->addItem(info.portName());
+    }
+}
+void uart_gui::on_port_index_currentIndexChanged(const QString &arg1)
+{
+    bool x = uhd->open_serial_port(arg1);
+    if (x == true){
+        uart_stat->setText("[开启成功！]");
+    }else{
+        uart_stat->setText("[开启失败！]");
+        return;
+    }
+    uhd->init_serial_param();
 }
 void uart_gui::add_widgets(QWidget *any_widgets, bool full_row)
 {
@@ -43,9 +74,7 @@ void uart_gui::add_widgets(QWidget *any_widgets, bool full_row)
 
 void uart_gui::init_layout()
 {
-
     main_lay->addLayout(widgets_layout, 0, 0, 1, 1);
-
     add_widgets(uart_stat);
     add_widgets(port_index);
     add_widgets(send_text, true);
@@ -66,4 +95,7 @@ uart_gui::~uart_gui()
     delete send_text;
     delete send;
     delete uart_log;
+    delete main_lay;
+    delete for_cert;
+    delete widgets_layout;
 }
