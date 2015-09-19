@@ -8,7 +8,6 @@ class sbt_uart_handler:public uart_handler
 public:
     sbt_uart_handler();
     ~sbt_uart_handler();
-    void uart_send();
     void uart_recvie();
     void init_serial_param();
 public slots:

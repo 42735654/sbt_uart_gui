@@ -10,11 +10,26 @@ uart_gui::uart_gui(uart_handler *hd)
     init_layout();
     this->resize(800, 480);
     init_serial_port();
-
 }
 void uart_gui::init_connections()
 {
+    //串口选择改变
     connect(port_index, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_port_index_currentIndexChanged(QString)));
+
+    //发送按钮
+    connect(send, SIGNAL(clicked(bool)), this, SLOT(send_line_text()));
+
+    connect(uhd->serial, SIGNAL(readyRead()), this, SLOT(gui_handle_uart_data()));
+}
+void uart_gui::gui_handle_uart_data()
+{
+    QString  = uhd->uart_recvie();
+}
+
+void uart_gui::send_line_text()
+{
+    QString t = send_text->text();
+    uhd->uart_send(t.toLatin1().data(), t.length());
 }
 
 void uart_gui::init_widgets()
@@ -49,8 +64,10 @@ void uart_gui::on_port_index_currentIndexChanged(const QString &arg1)
     bool x = uhd->open_serial_port(arg1);
     if (x == true){
         uart_stat->setText("[开启成功！]");
+        log_to_ui("开启成功");
     }else{
         uart_stat->setText("[开启失败！]");
+        log_to_ui("开启失败");
         return;
     }
     uhd->init_serial_param();
@@ -86,6 +103,10 @@ void uart_gui::init_layout()
     //比例为1：3
     main_lay->setColumnStretch(0, 1);
     main_lay->setColumnStretch(1, 3);
+}
+void uart_gui::log_to_ui(QString log)
+{
+    uart_log->append(log);
 }
 
 uart_gui::~uart_gui()

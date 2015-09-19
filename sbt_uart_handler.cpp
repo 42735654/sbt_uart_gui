@@ -30,4 +30,5 @@ void sbt_uart_handler::init_serial_param()
     serial->setParity(QSerialPort::NoParity);    //无奇偶校验
     serial->setStopBits(QSerialPort::OneStop);   //停止位1
     serial->setFlowControl(QSerialPort::NoFlowControl);  //无控制
+    connect(serial, SIGNAL(readyRead), this, SLOT(uart_recvie));
 }

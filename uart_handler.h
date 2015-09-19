@@ -10,10 +10,13 @@ public:
 public:
     uart_handler();
     virtual ~uart_handler() = 0;
-    virtual void uart_send(){}
+
+    virtual int uart_send(char *buf, int len);
+    bool open_serial_port(QString port_name);
+
     virtual void uart_recvie(){}
     virtual void init_serial_param(){}
-    bool open_serial_port(QString port_name);
+
 };
 
 #endif // UART_HANDLER_H
