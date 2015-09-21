@@ -42,7 +42,7 @@ class sbt_uart_handler:public uart_handler
 {
 public:
     sbt_arg *s_arg;
-    sbt_uart_handler(QSerialPort::BaudRate buad);
+    sbt_uart_handler();
     ~sbt_uart_handler();
 
     void init_serial_param();

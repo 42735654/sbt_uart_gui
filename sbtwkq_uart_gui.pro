@@ -13,12 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        sbtwkq_uart_gui.cpp \
     uart_handler.cpp \
     sbt_uart_handler.cpp \
     uart_gui.cpp
 
-HEADERS  += sbtwkq_uart_gui.h \
+HEADERS  += \
     uart_gui.h \
     uart_handler.h \
     sbt_uart_handler.h

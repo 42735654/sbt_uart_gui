@@ -18,6 +18,7 @@ void uart_gui::set_arg_by_ui()
         uhd->arg[index] = n;
     }
 }
+
 uart_gui::uart_gui(uart_handler *hd)
 {
     uhd = hd;
@@ -51,6 +52,7 @@ void uart_gui::add_widgets_by_infos(status_widgets_info *swi, int count)
         memcpy(sw.swis[sw.swi_count].swi, &swi[i], sizeof(status_widgets_info));
         add_widget_by_info(sw.swis[sw.swi_count].swi);
     }
+    set_ui_by_arg();
 }
 void uart_gui::init_connections()
 {
@@ -58,13 +60,12 @@ void uart_gui::init_connections()
     connect(port_index, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_port_index_currentIndexChanged(QString)));
     //发送按钮
     connect(send, SIGNAL(clicked(bool)), this, SLOT(send_line_text()));
-
+    //textbrowser 位置移到末尾
     connect(uart_log, SIGNAL(textChanged()), this, SLOT(text_browser_text_changed()));
-
+    //打印log信息
     connect(uhd, SIGNAL(log_to_ui(QString)), this, SLOT(__log_to_ui(QString)));
-
+    //点击设置参数按钮
     connect(set_arg, SIGNAL(clicked(bool)), this, SLOT(set_arg_by_ui()));
-
 }
 void uart_gui::text_browser_text_changed()
 {

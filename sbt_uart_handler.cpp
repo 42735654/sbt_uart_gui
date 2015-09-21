@@ -1,9 +1,9 @@
 #include "sbt_uart_handler.h"
 
-sbt_uart_handler::sbt_uart_handler(QSerialPort::BaudRate buad)
+sbt_uart_handler::sbt_uart_handler()
 {
     serial = NULL;
-    btl = buad;
+    btl = QSerialPort::Baud9600;
     s_arg = (sbt_arg *)arg;
 }
 
@@ -34,6 +34,8 @@ void sbt_uart_handler::uart_recvie()
         if (data_is_cmd()){
             set_arg_by_uart();
         }else{
+            udata.replace('\n', ' ');
+            udata.replace('\r', ' ');
             emit log_to_ui(udata);
         }
     }
