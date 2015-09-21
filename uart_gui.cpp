@@ -15,7 +15,6 @@ void uart_gui::init_connections()
 {
     //串口选择改变
     connect(port_index, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_port_index_currentIndexChanged(QString)));
-
     //发送按钮
     connect(send, SIGNAL(clicked(bool)), this, SLOT(send_line_text()));
 

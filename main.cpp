@@ -5,8 +5,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    sbt_uart_handler hd;
-    sbtwkq_uart_gui *w = new sbtwkq_uart_gui(&hd);
+    sbt_uart_handler *hd = new sbt_uart_handler(QSerialPort::Baud9600);
+    sbtwkq_uart_gui *w = new sbtwkq_uart_gui(hd);
     w->show();
 
     return a.exec();

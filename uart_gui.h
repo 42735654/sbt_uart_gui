@@ -13,10 +13,7 @@
 #include <QFormLayout>
 #include <QDebug>
 #include <QByteArray>
-#define MAX_COL     24
-#define MAX_ROWS    16
-#define TEXT_BROWSER_COL        (MAX_COL * 2 / 3)
-#define WIDGETS_COL     (MAX_COL - TEXT_BROWSER_COL)
+
 
 class uart_gui:public QMainWindow
 {

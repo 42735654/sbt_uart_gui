@@ -10,6 +10,7 @@ class uart_handler:public QObject
 public:
     QSerialPort *serial;
     QByteArray udata;
+    QSerialPort::BaudRate btl;
 public:
     uart_handler();
     virtual ~uart_handler() = 0;
@@ -21,6 +22,7 @@ public:
     virtual void init_serial_param(){}
     virtual bool data_is_cmd(){return false;}
     virtual void set_arg_by_uart(){}
+    virtual void cmd_data_parser(){}
 public slots:
     virtual void uart_recvie(){}
 signals:

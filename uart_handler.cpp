@@ -2,7 +2,7 @@
 
 uart_handler::uart_handler()
 {
-
+    btl = QSerialPort::Baud115200;
 }
 
 uart_handler::~uart_handler()

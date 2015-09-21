@@ -1,13 +1,16 @@
 #include "sbt_uart_handler.h"
 
-sbt_uart_handler::sbt_uart_handler()
+sbt_uart_handler::sbt_uart_handler(QSerialPort::BaudRate buad)
 {
     serial = NULL;
+    btl = buad;
 }
 
 sbt_uart_handler::~sbt_uart_handler()
 {
-
+    if (serial){
+        delete serial;
+    }
 }
 
 bool sbt_uart_handler::data_is_cmd()
@@ -18,10 +21,14 @@ void sbt_uart_handler::set_arg_by_uart()
 {
 
 }
+void sbt_uart_handler::cmd_data_parser()
+{
+
+}
 
 void sbt_uart_handler::uart_recvie()
 {
-    while(serial->bytesAvailable()){
+    while(serial->canReadLine()){
         udata = serial->readLine();
         if (data_is_cmd()){
             set_arg_by_uart();
@@ -31,13 +38,12 @@ void sbt_uart_handler::uart_recvie()
     }
 }
 
-
 void sbt_uart_handler::init_serial_param()
 {
     if (serial == NULL){
         return;
     }
-    serial->setBaudRate(QSerialPort::Baud9600);  //波特率
+    serial->setBaudRate(btl);  //波特率
     serial->setDataBits(QSerialPort::Data8); //数据位
     serial->setParity(QSerialPort::NoParity);    //无奇偶校验
     serial->setStopBits(QSerialPort::OneStop);   //停止位1
