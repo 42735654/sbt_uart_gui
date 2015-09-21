@@ -5,7 +5,7 @@ status_widgets_info  sbt_self_widgets[] = {
     {0, "温度"},
     {1, "风速"},
     {2, "模式"},
-    {3, "开关机"}
+    {3, "开关机"},
 };
 
 int main(int argc, char *argv[])

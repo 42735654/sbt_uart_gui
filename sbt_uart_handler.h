@@ -4,6 +4,7 @@
 #include <QSerialPortInfo>
 #include <uart_handler.h>
 #include <QByteArray>
+#define get_index_by_name(s, name)   (s->name - s[0])
 typedef unsigned char u_int8_t;
 typedef struct{
     u_int8_t temp;
