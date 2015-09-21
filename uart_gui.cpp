@@ -26,11 +26,13 @@ uart_gui::uart_gui(uart_handler *hd)
     count = 0;
     sw.swi_count = 0;
     role = QFormLayout::LabelRole;
-    init_widgets();
+
+    init_base_widgets();
     init_connections();
     init_layout();
+    init_serial_port_list();
+
     this->resize(800, 480);
-    init_serial_port();
 }
 void uart_gui::add_widget_by_info(status_widgets_info *swi)
 {
@@ -63,9 +65,11 @@ void uart_gui::init_connections()
     //textbrowser 位置移到末尾
     connect(uart_log, SIGNAL(textChanged()), this, SLOT(text_browser_text_changed()));
     //打印log信息
-    connect(uhd, SIGNAL(log_to_ui(QString)), this, SLOT(__log_to_ui(QString)));
+    connect(uhd, SIGNAL(s_log_to_ui(QString)), this, SLOT(__log_to_ui(QString)));
     //点击设置参数按钮
     connect(set_arg, SIGNAL(clicked(bool)), this, SLOT(set_arg_by_ui()));
+    //处理串口过来的信号
+    connect(uhd, SIGNAL(signal_for_uart_to_ui(uart_handler::signal_type)), this, SLOT(handle_uart_to_ui_signal(uart_handler::signal_type)));
 }
 void uart_gui::text_browser_text_changed()
 {
@@ -74,7 +78,8 @@ void uart_gui::text_browser_text_changed()
 
 void uart_gui::__log_to_ui(QString s)
 {
-    uart_log->append(s);
+    QString __log = "[" + QTime::currentTime().toString() + "]"+ s;
+    uart_log->append(__log);
 }
 
 void uart_gui::send_line_text()
@@ -83,29 +88,36 @@ void uart_gui::send_line_text()
     uhd->uart_send(t.toLatin1().data(), t.length());
 }
 
-void uart_gui::init_widgets()
+void uart_gui::init_base_widgets()
 {
     port_index = new QComboBox;
     port_index->addItem("串口选择");
+
     uart_stat = new QLabel;
     uart_stat->setText("串口关闭");
+
     send_text = new QLineEdit;
     send = new QPushButton;
+
     send->setText("发送");
     set_arg = new QPushButton;
     set_arg->setText("设置以下参数到设备");
+
     uart_log = new QTextBrowser;
+    uart_log->setFontPointSize(12);
     sw.swi_count = 0;
+
     main_lay = new QGridLayout;
     for_cert = new QWidget;
     widgets_layout = new QFormLayout;
 }
-void uart_gui::init_serial_port()
+void uart_gui::init_serial_port_list()
 {
     QList<QSerialPortInfo>  infos = QSerialPortInfo::availablePorts();
     if(infos.isEmpty())
     {
-        port_index->addItem("没有可用串口");
+        port_index->addItem("没有可用串口!");
+        __log_to_ui("没有可用串口!");
         return;
     }
     foreach (QSerialPortInfo info, infos) {
@@ -121,6 +133,7 @@ void uart_gui::on_port_index_currentIndexChanged(const QString &arg1)
     }else{
         uart_stat->setText("[开启失败！]");
         __log_to_ui("开启失败");
+        uhd->serial = NULL;
         return;
     }
     uhd->init_serial_param();
@@ -166,5 +179,15 @@ uart_gui::~uart_gui()
 
     for (int i = 0; i < sw.swi_count; i++){
         delete sw.swis[i].swi;
+    }
+}
+void uart_gui::handle_uart_to_ui_signal(uart_handler::signal_type t)
+{
+    switch (t){
+        case uart_handler::ARG_CHANGED:
+            set_ui_by_arg();
+            break;
+        default:
+            break;
     }
 }

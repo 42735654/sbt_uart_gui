@@ -4,7 +4,7 @@
 #include <QSerialPortInfo>
 #include <uart_handler.h>
 #include <QByteArray>
-#define get_index_by_name(s, name)   (s->name - s[0])
+
 typedef unsigned char u_int8_t;
 typedef struct{
     u_int8_t temp;
@@ -39,20 +39,18 @@ typedef struct{
 
     u_int8_t time_table[24];
 }sbt_arg;
+//#define get_index_by_name(name)   ((&(((sbt_arg *)0)->name) - &(sbt_arg *)0) / sizeof(u_int8_t *))
+#define get_index_by_name(name)     (&((sbt_arg *)0)->name - (u_int8_t *)((sbt_arg *)0))
 class sbt_uart_handler:public uart_handler
 {
 public:
-    sbt_arg *s_arg;
-    sbt_arg last_stat;
+
     sbt_uart_handler();
     ~sbt_uart_handler();
 
     void init_serial_param();
     bool data_is_cmd();
     void set_arg_by_uart();
-    void cmd_data_parser();
-public slots:
-    void uart_recvie();
 };
 
 #endif // SBT_UART_HANDLER_H

@@ -4,8 +4,7 @@ sbt_uart_handler::sbt_uart_handler()
 {
     serial = NULL;
     btl = QSerialPort::Baud9600;
-    s_arg = (sbt_arg *)arg;
-    memcpy(&last_stat, arg, sizeof(sbt_arg));
+    recv_pthread = new uart_pthread_recv(this);
 }
 
 sbt_uart_handler::~sbt_uart_handler()
@@ -17,28 +16,19 @@ sbt_uart_handler::~sbt_uart_handler()
 
 bool sbt_uart_handler::data_is_cmd()
 {
-    return false;
+    if (udata.at(0) == 0xFF && udata.at(1) == 0xAA){
+        return true;
+    }else{
+        return false;
+    }
 }
+
 void sbt_uart_handler::set_arg_by_uart()
 {
-
-}
-void sbt_uart_handler::cmd_data_parser()
-{
-
-}
-
-void sbt_uart_handler::uart_recvie()
-{
-    while(serial->canReadLine()){
-        udata = serial->readLine();
-        if (data_is_cmd()){
-            set_arg_by_uart();
-        }else{
-            udata.replace('\n', ' ');
-            udata.replace('\r', ' ');
-            emit log_to_ui(udata);
-        }
+    u_int8_t cmd = udata.at(2);
+    switch(cmd){
+            default:
+                break;
     }
 }
 
@@ -52,5 +42,4 @@ void sbt_uart_handler::init_serial_param()
     serial->setParity(QSerialPort::NoParity);    //无奇偶校验
     serial->setStopBits(QSerialPort::OneStop);   //停止位1
     serial->setFlowControl(QSerialPort::NoFlowControl);  //无控制
-    connect(serial, SIGNAL(readyRead()), this, SLOT(uart_recvie()));
 }
