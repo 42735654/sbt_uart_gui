@@ -9,14 +9,26 @@ sbt_uart_handler::~sbt_uart_handler()
 {
 
 }
-void sbt_uart_handler::uart_send()
+
+bool sbt_uart_handler::data_is_cmd()
+{
+    return false;
+}
+void sbt_uart_handler::set_arg_by_uart()
 {
 
 }
 
 void sbt_uart_handler::uart_recvie()
 {
-
+    while(serial->bytesAvailable()){
+        udata = serial->readLine();
+        if (data_is_cmd()){
+            set_arg_by_uart();
+        }else{
+            emit log_to_ui(udata);
+        }
+    }
 }
 
 
@@ -30,5 +42,5 @@ void sbt_uart_handler::init_serial_param()
     serial->setParity(QSerialPort::NoParity);    //无奇偶校验
     serial->setStopBits(QSerialPort::OneStop);   //停止位1
     serial->setFlowControl(QSerialPort::NoFlowControl);  //无控制
-    connect(serial, SIGNAL(readyRead), this, SLOT(uart_recvie));
+    connect(serial, SIGNAL(readyRead()), this, SLOT(uart_recvie()));
 }

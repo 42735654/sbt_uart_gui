@@ -39,15 +39,14 @@ public:
     void init_layout();
     void add_widgets(QWidget *any_widgets, bool full_row = false);
     void init_serial_port();
-    void log_to_ui(QString log);
-    void init_connections();
 
+    void init_connections();
 
     virtual ~uart_gui() = 0;
     virtual void set_ui_by_arg(){}
     virtual void set_arg_by_ui(){}
     virtual void set_arg_by_uart(){}
-    virtual void gui_handle_uart_data();
+
     virtual void ui_refresh(){}
     virtual void uart_data_handle(){}
     virtual void send_uart_data(){}
@@ -55,6 +54,8 @@ public:
 public slots:
     void on_port_index_currentIndexChanged(const QString &arg1);
     void send_line_text();
+    void text_browser_text_changed();
+    void __log_to_ui(QString log);
 protected:
     uart_handler *uhd;
 };
