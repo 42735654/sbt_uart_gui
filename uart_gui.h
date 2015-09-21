@@ -13,7 +13,23 @@
 #include <QFormLayout>
 #include <QDebug>
 #include <QByteArray>
+#define MAX_WIDGETS_NUM    50
+typedef unsigned char u_int8_t;
+typedef struct{
+    int index_in_arg;
+    const char *widget_name;
+}status_widgets_info;
 
+typedef struct{
+    QLabel *label;
+    QLineEdit *lineedit;
+    status_widgets_info *swi;
+}widgets_t;
+
+typedef struct{
+    widgets_t swis[MAX_WIDGETS_NUM];
+    int swi_count;
+}widgets_list;
 
 class uart_gui:public QMainWindow
 {
@@ -24,9 +40,12 @@ private:
     QLabel *uart_stat;
     QLineEdit *send_text;
     QPushButton *send;
+    QPushButton *set_arg;
     QTextBrowser *uart_log;
     QGridLayout *main_lay;
+    QLabel space;
     QFormLayout *widgets_layout;
+    widgets_list sw;
     int rows;
     int role;
     int count;
@@ -36,15 +55,13 @@ public:
     void init_layout();
     void add_widgets(QWidget *any_widgets, bool full_row = false);
     void init_serial_port();
-
+    void add_widget_by_info(status_widgets_info *swi);
+    void add_widgets_by_infos(status_widgets_info *swi, int count);
     void init_connections();
 
-    virtual ~uart_gui() = 0;
-    virtual void set_ui_by_arg(){}
-    virtual void set_arg_by_ui(){}
-    virtual void set_arg_by_uart(){}
-
-    virtual void ui_refresh(){}
+    ~uart_gui();
+    virtual void set_ui_by_arg();
+    virtual void set_arg_by_ui();
     virtual void uart_data_handle(){}
     virtual void send_uart_data(){}
 

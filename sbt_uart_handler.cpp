@@ -4,6 +4,7 @@ sbt_uart_handler::sbt_uart_handler(QSerialPort::BaudRate buad)
 {
     serial = NULL;
     btl = buad;
+    s_arg = (sbt_arg *)arg;
 }
 
 sbt_uart_handler::~sbt_uart_handler()

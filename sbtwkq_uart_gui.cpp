@@ -1,41 +1,7 @@
-#include "sbtwkq_uart_gui.h"
-
-sbtwkq_uart_gui::sbtwkq_uart_gui(uart_handler *hd) :
-    uart_gui(hd)
-{
-
-}
-
-sbtwkq_uart_gui::~sbtwkq_uart_gui()
-{
-
-}
-void sbtwkq_uart_gui::set_ui_by_arg()
-{
-
-}
-
-void sbtwkq_uart_gui::set_arg_by_ui()
-{
-
-}
-
-void sbtwkq_uart_gui::set_arg_by_uart()
-{
-
-}
-
-void sbtwkq_uart_gui::ui_refresh()
-{
-
-}
-
-void sbtwkq_uart_gui::uart_data_handle()
-{
-
-}
-
-void sbtwkq_uart_gui::send_uart_data()
-{
-
-}
+#include "uart_gui.h"
+status_widgets_info  sbt_self_widgets[4] = {
+    {0, "温度"},
+    {1, "风速"},
+    {2, "模式"},
+    {3, "开关机"}
+};

@@ -3,6 +3,7 @@
 uart_handler::uart_handler()
 {
     btl = QSerialPort::Baud115200;
+    memset(arg, 0, sizeof(arg));
 }
 
 uart_handler::~uart_handler()

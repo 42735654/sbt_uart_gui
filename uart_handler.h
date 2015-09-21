@@ -4,6 +4,7 @@
 #include <QSerialPortInfo>
 #include <QObject>
 #include <QByteArray>
+typedef unsigned char u_int8_t;
 class uart_handler:public QObject
 {
     Q_OBJECT
@@ -11,6 +12,7 @@ public:
     QSerialPort *serial;
     QByteArray udata;
     QSerialPort::BaudRate btl;
+    u_int8_t arg[512];
 public:
     uart_handler();
     virtual ~uart_handler() = 0;
