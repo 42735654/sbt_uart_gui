@@ -5,6 +5,7 @@ sbt_uart_handler::sbt_uart_handler()
     serial = NULL;
     btl = QSerialPort::Baud9600;
     s_arg = (sbt_arg *)arg;
+    memcpy(&last_stat, arg, sizeof(sbt_arg));
 }
 
 sbt_uart_handler::~sbt_uart_handler()

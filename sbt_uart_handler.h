@@ -42,6 +42,7 @@ class sbt_uart_handler:public uart_handler
 {
 public:
     sbt_arg *s_arg;
+    sbt_arg last_stat;
     sbt_uart_handler();
     ~sbt_uart_handler();
 
