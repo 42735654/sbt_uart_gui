@@ -15,13 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
     uart_handler.cpp \
     sbt_uart_handler.cpp \
-    uart_gui.cpp \
-    uart_recv_pthread.cpp
+    uart_gui.cpp
 
 HEADERS  += \
     uart_gui.h \
     uart_handler.h \
-    sbt_uart_handler.h \
-    uart_recv_pthread.h
+    sbt_uart_handler.h
+
 
 FORMS    +=

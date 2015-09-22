@@ -38,19 +38,21 @@ typedef struct{
     u_int8_t w;
 
     u_int8_t time_table[24];
-}sbt_arg;
-//#define get_index_by_name(name)   ((&(((sbt_arg *)0)->name) - &(sbt_arg *)0) / sizeof(u_int8_t *))
-#define get_index_by_name(name)     (&((sbt_arg *)0)->name - (u_int8_t *)((sbt_arg *)0))
+}uart_stat_arg;
+#define GET_INDEX_BY_NAME(type, name)     (&((type *)0)->name - (u_int8_t *)((type *)0))
 class sbt_uart_handler:public uart_handler
 {
 public:
 
     sbt_uart_handler();
-    ~sbt_uart_handler();
+    virtual ~sbt_uart_handler();
 
     void init_serial_param();
     bool data_is_cmd();
     void set_arg_by_uart();
+    u_int8_t sbtwkq_checksum_calc(u_int8_t *buf, u_int8_t len);
+
+    u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len);
 };
 
 #endif // SBT_UART_HANDLER_H

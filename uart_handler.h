@@ -5,8 +5,23 @@
 #include <QObject>
 #include <QByteArray>
 #include <QTime>
-#include "uart_recv_pthread.h"
-class uart_pthread_recv;
+#include <QThread>
+#define SBT_UART_CMD_QUERY			6
+#define SBT_UART_CMD_WIFI_STAT		7
+#define SBT_UART_CMD_QUERY_REPLY	100
+#define SBT_UART_CMD_TEST			101
+class uart_handler;
+
+class uart_recv_pthread:public QThread
+{
+public:
+    uart_recv_pthread(uart_handler *hd);
+    void run();
+
+protected:
+    uart_handler *uhd;
+};
+
 typedef unsigned char u_int8_t;
 class uart_handler:public QObject
 {
@@ -17,7 +32,8 @@ public:
     QSerialPort::BaudRate btl;  //波特率
     u_int8_t arg[512];              //项目相关参数，对应到ui中的控件显示
     u_int8_t last_arg[512];              //备份参数
-    uart_pthread_recv *recv_pthread;     //读取数据线程
+    u_int8_t stat_len;
+    uart_recv_pthread *recv_pthread;     //读取数据线程
 
     enum signal_type{
         ARG_CHANGED = 0,
@@ -27,14 +43,16 @@ public:
     uart_handler();
     virtual ~uart_handler();
 
-    virtual int uart_send(char *buf, int len);              //发送数据
+    virtual int uart_send(u_int8_t *buf, int len);              //发送数据
     bool open_serial_port(QString port_name);      //打开串口
     void uart_recvie();                                   //串口数据的接收方法
     void log_to_ui(QString s);
+    void set_stat_len(int len){stat_len = len;}
 
     virtual void init_serial_param(){}                      //初始化串口参数，派生类需重载
-    virtual bool data_is_cmd()=0;                           //接收到的是否是串口命令
-    virtual void set_arg_by_uart()=0;                       //根据串口数据设置参数
+    virtual bool data_is_cmd() = 0;                           //接收到的是否是串口命令
+    virtual void set_arg_by_uart() = 0;                       //根据串口数据设置参数
+    virtual u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len) = 0;
 
 signals:
     void s_log_to_ui(QString s);                                  //输出信息到ui
@@ -43,5 +61,6 @@ signals:
 public slots:
     void begin_to_recvie();
 };
+
 
 #endif // UART_HANDLER_H

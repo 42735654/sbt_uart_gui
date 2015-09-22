@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
     sbt_uart_handler  hd;
     uart_gui w(&hd);
-    qDebug("%d", get_index_by_name(temp));
+    qDebug("%d", GET_INDEX_BY_NAME(uart_stat_arg, temp));
     w.add_widgets_by_infos(sbt_self_widgets, sizeof(sbt_self_widgets) / sizeof(status_widgets_info));
 
     w.show();

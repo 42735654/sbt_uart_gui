@@ -18,7 +18,6 @@ void uart_handler::log_to_ui(QString s)
 
 void uart_handler::uart_recvie()
 {
-    log_to_ui("开始接收数据线程...");
     while(serial->canReadLine()){
         udata = serial->readLine();
         if (data_is_cmd()){
@@ -33,7 +32,6 @@ void uart_handler::uart_recvie()
             log_to_ui(udata);
         }
     }
-    log_to_ui("接收完成！");
 }
 bool uart_handler::open_serial_port(QString port_name)
 {
@@ -49,13 +47,12 @@ bool uart_handler::open_serial_port(QString port_name)
 void uart_handler::begin_to_recvie()
 {
     if (recv_pthread->isRunning()){
-        log_to_ui("上次数据还未接收完成！");
         return;
     }
     recv_pthread->start();
 }
 
-int uart_handler::uart_send(char *buf, int len)
+int uart_handler::uart_send(u_int8_t *buf, int len)
 {
     if (!serial){
         log_to_ui("请先打开一个串口！");
@@ -64,10 +61,19 @@ int uart_handler::uart_send(char *buf, int len)
     emit serial->readyRead();
 
     QString log;
-    int has_send_len = serial->write(buf, len);
+    int has_send_len = serial->write((char *)buf, len);
     if (has_send_len != len){
         log.sprintf("uart send error!ask send %d bytes but only send %d bytes", len, has_send_len);
         log_to_ui(log);
     }
     return has_send_len;
+}
+uart_recv_pthread::uart_recv_pthread(uart_handler *hd)
+{
+    uhd = hd;
+}
+
+void uart_recv_pthread::run()
+{
+    uhd->uart_recvie();
 }

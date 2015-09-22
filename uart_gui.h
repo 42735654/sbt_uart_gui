@@ -59,7 +59,7 @@ private:
     void init_connections();                //初始化内部信号与曹
 public:
     uart_gui(uart_handler *hd);
-    ~uart_gui();
+    virtual ~uart_gui();
     void add_widgets(QWidget *any_widgets, bool full_row = false);  //向控件布局中添加一个控件
     void add_widget_by_info(status_widgets_info *swi);                      //根据描述添加控件
     void add_widgets_by_infos(status_widgets_info *swi, int count);     //根据描述列表添加控件

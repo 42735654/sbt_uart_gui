@@ -85,7 +85,7 @@ void uart_gui::__log_to_ui(QString s)
 void uart_gui::send_line_text()
 {
     QString t = send_text->text();
-    uhd->uart_send(t.toLatin1().data(), t.length());
+    uhd->uart_send((u_int8_t *)t.toLatin1().data(), t.length());
 }
 
 void uart_gui::init_base_widgets()
