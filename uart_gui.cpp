@@ -1,11 +1,13 @@
 #include "uart_gui.h"
 void uart_gui::set_ui_by_arg()
 {
+//    qDebug("set_ui_by_arg");
     u_int8_t n, index;
     for (int i = 0; i < sw.swi_count; i++){
         index = (sw.swis[i].swi)->index_in_arg;
         n = uhd->arg[index];
         sw.swis[i].lineedit->setText(QString::number(n));
+//        qDebug("set line %s to %u", (sw.swis[i].swi)->widget_name, n);
     }
 }
 
@@ -16,7 +18,10 @@ void uart_gui::set_arg_by_ui()
         index = (sw.swis[i].swi)->index_in_arg;
         n = sw.swis[i].lineedit->text().toInt();
         uhd->arg[index] = n;
+//        qDebug("arg[%d]=%u", index, uhd->arg[index]);
     }
+    memcpy(uhd->last_arg, uhd->arg, uhd->stat_len);
+    uhd->uart_cmd_reply_query();
 }
 
 uart_gui::uart_gui(uart_handler *hd)
@@ -68,6 +73,8 @@ void uart_gui::init_connections()
     connect(uhd, SIGNAL(s_log_to_ui(QString)), this, SLOT(__log_to_ui(QString)));
     //点击设置参数按钮
     connect(set_arg, SIGNAL(clicked(bool)), this, SLOT(set_arg_by_ui()));
+    //点击设置参数按钮
+    connect(clear, SIGNAL(clicked(bool)), this, SLOT(clear_browser()));
     //处理串口过来的信号
     connect(uhd, SIGNAL(signal_for_uart_to_ui(uart_handler::signal_type)), this, SLOT(handle_uart_to_ui_signal(uart_handler::signal_type)));
 }
@@ -97,11 +104,11 @@ void uart_gui::init_base_widgets()
     uart_stat->setText("串口关闭");
 
     send_text = new QLineEdit;
-    send = new QPushButton;
+    send = new QPushButton("发送");
 
-    send->setText("发送");
-    set_arg = new QPushButton;
-    set_arg->setText("设置以下参数到设备");
+    set_arg = new QPushButton("设置以下参数到设备");
+
+    clear = new QPushButton("清屏");
 
     uart_log = new QTextBrowser;
     uart_log->setFontPointSize(12);
@@ -163,6 +170,7 @@ void uart_gui::init_layout()
     add_widgets(send_text, true);
     add_widgets(send);
     add_widgets(set_arg);
+    add_widgets(clear);
 
     for_cert->setLayout(main_lay);
     this->setCentralWidget(for_cert);

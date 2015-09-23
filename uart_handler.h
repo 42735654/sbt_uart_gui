@@ -11,18 +11,20 @@
 #define SBT_UART_CMD_QUERY_REPLY	100
 #define SBT_UART_CMD_TEST			101
 class uart_handler;
-
+typedef unsigned char u_int8_t;
 class uart_recv_pthread:public QThread
 {
+    Q_OBJECT
 public:
     uart_recv_pthread(uart_handler *hd);
     void run();
 
-protected:
     uart_handler *uhd;
+signals:
+    void signal_uart_send(u_int8_t *buf, u_int8_t len);
 };
 
-typedef unsigned char u_int8_t;
+
 class uart_handler:public QObject
 {
     Q_OBJECT
@@ -43,15 +45,16 @@ public:
     uart_handler();
     virtual ~uart_handler();
 
-    virtual int uart_send(u_int8_t *buf, int len);              //发送数据
+    virtual int uart_send(u_int8_t *buf, u_int8_t len);              //发送数据
     bool open_serial_port(QString port_name);      //打开串口
-    void uart_recvie();                                   //串口数据的接收方法
+    virtual void uart_recvie();                                   //串口数据的接收方法
     void log_to_ui(QString s);
     void set_stat_len(int len){stat_len = len;}
 
     virtual void init_serial_param(){}                      //初始化串口参数，派生类需重载
     virtual bool data_is_cmd() = 0;                           //接收到的是否是串口命令
     virtual void set_arg_by_uart() = 0;                       //根据串口数据设置参数
+    virtual void uart_cmd_reply_query()=0;
     virtual u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len) = 0;
 
 signals:
@@ -60,6 +63,7 @@ signals:
 
 public slots:
     void begin_to_recvie();
+    void slot_uart_send(u_int8_t *buf, u_int8_t len){uart_send(buf, len);}
 };
 
 

@@ -43,6 +43,7 @@ private:
     QPushButton *set_arg;               //设置参数按钮
     QTextBrowser *uart_log;             //终端显示框
     QLabel space;                              //占位控件
+    QPushButton *clear;                              //清屏
 
     QGridLayout *main_lay;              //主布局
     QFormLayout *widgets_layout;    //控件布局
@@ -73,6 +74,7 @@ public slots:
     void __log_to_ui(QString log);                                                                  //打印信息到textbrowser中
     void handle_uart_to_ui_signal(uart_handler::signal_type t);
     virtual void set_arg_by_ui();                   //根据UI控件设置参数
+    void clear_browser(){uart_log->clear();}
 protected:
     uart_handler *uhd;                         //串口操作类
 };

@@ -12,7 +12,7 @@ typedef struct{
     u_int8_t mode;
     u_int8_t power;
 
-    u_int8_t auto_node;
+    u_int8_t auto_mode;
     u_int8_t temp_makeup;
     u_int8_t low_temp;
     u_int8_t wind_power;
@@ -40,18 +40,25 @@ typedef struct{
     u_int8_t time_table[24];
 }uart_stat_arg;
 #define GET_INDEX_BY_NAME(type, name)     (&((type *)0)->name - (u_int8_t *)((type *)0))
+
+#define GET_SBT_INDEX(name)   GET_INDEX_BY_NAME(uart_stat_arg, name)
 class sbt_uart_handler:public uart_handler
 {
 public:
-
+    typedef enum {
+        US_NONE,
+        US_SYNC2,
+        US_DATA,
+    }sbtwkq_us_t;
     sbt_uart_handler();
     virtual ~sbt_uart_handler();
 
     void init_serial_param();
     bool data_is_cmd();
     void set_arg_by_uart();
+//    void uart_recvie();
     u_int8_t sbtwkq_checksum_calc(u_int8_t *buf, u_int8_t len);
-
+    void uart_cmd_reply_query();
     u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len);
 };
 
