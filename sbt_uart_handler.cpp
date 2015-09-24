@@ -1,4 +1,5 @@
 #include "sbt_uart_handler.h"
+
 sbt_uart_handler::sbt_uart_handler()
 {
     serial = NULL;
@@ -23,14 +24,9 @@ bool sbt_uart_handler::data_is_cmd()
         return false;
     }
 }
-
-void sbt_uart_handler::set_arg_by_uart()
+bool sbt_uart_handler::check_sum()
 {
     u_int8_t *data = (u_int8_t *)udata.data();
-    u_int8_t cmd = data[2];
-    if (cmd == 128){
-        return;
-    }
     u_int8_t c = sbtwkq_checksum_calc(data, 8 + data[4]);
     u_int8_t b =  data[8 + data[4]];
 #ifdef DEBUG_LOG
@@ -38,42 +34,9 @@ void sbt_uart_handler::set_arg_by_uart()
 #endif
     if (c != b){
         qDebug("check sum error!");
-        return;
-    }
-    switch(cmd){
-        case SBT_UART_CMD_QUERY:
-            uart_cmd_reply_query();
-            break;
-        case SBT_UART_CMD_WORK_STAT_SET:
-            memcpy(&arg[0], &data[8], data[4]);
-            uart_cmd_reply_query();
-            break;
-        case SBT_UART_CMD_SPECIAL_SET:
-            memcpy(&arg[4], &data[8], data[4]);
-            uart_cmd_reply_query();
-            break;
-        case SBT_UART_CMD_TIME_SET:
-            memcpy(&arg[20], &data[8], data[4]);
-            uart_cmd_reply_query();
-            break;
-        case SBT_UART_CMD_AUTO_SET:
-            memcpy(&arg[24], &data[8], data[4]);
-            uart_cmd_reply_query();
-        break;
-        default:
-            break;
-    }
-}
-void sbt_uart_handler::uart_cmd_reply_query(int type)
-{
-    u_int8_t len = stat_len;
-    u_int8_t *pkt;
-    switch (type){
-        default:
-        pkt = generate_uart_reply_pkt(SBT_UART_CMD_QUERY_REPLY, &arg[0], &len);
-        uart_send(pkt, len);
-        free(pkt);
-        break;
+        return false;
+    }else{
+        return true;
     }
 }
 
@@ -116,4 +79,8 @@ u_int8_t sbt_uart_handler::sbtwkq_checksum_calc(u_int8_t *buf, u_int8_t len)
         sum += buf[i];
     }
     return sum & 0xff;
+}
+u_int8_t sbt_uart_handler::get_cmd_from_pkt()
+{
+    return udata.data()[2];
 }

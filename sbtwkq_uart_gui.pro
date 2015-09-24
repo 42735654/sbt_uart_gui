@@ -25,7 +25,8 @@ HEADERS  += \
     dev_type_chose.h \
     type_def.h \
     sbt_ui_define.h \
-    sbt_type_define.h
+    sbt_type_define.h \
+    sbt_cmd_define.h
 
 
 FORMS    +=

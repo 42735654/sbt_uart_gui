@@ -7,6 +7,7 @@
 #include <QTime>
 #include <QThread>
 #include "config.h"
+#include "type_def.h"
 
 typedef unsigned char u_int8_t;
 
@@ -17,14 +18,15 @@ public:
     QSerialPort *serial;        //qt的串口类
     QByteArray udata;           //串口读取数据缓存
     QSerialPort::BaudRate btl;  //波特率
-    u_int8_t arg[512];              //项目相关参数，对应到ui中的控件显示
-    u_int8_t last_arg[512];              //备份参数
-    u_int8_t stat_len;
+    u_int8_t arg[UART_STAT_BUF_LEN];              //项目相关参数，对应到ui中的控件显示
+    u_int8_t last_arg[UART_STAT_BUF_LEN];              //备份参数
 
     enum signal_type{
         ARG_CHANGED = 0,
     };
-
+protected:
+    int cmd_count;
+    cmd_info *cmds;
 public:
     uart_handler();
     virtual ~uart_handler();
@@ -33,12 +35,14 @@ public:
     bool open_serial_port(QString port_name);      //打开串口
     virtual void uart_recvie();                                   //串口数据的接收方法
     void log_to_ui(QString s);
-    void set_stat_len(int len){stat_len = len;}
+    void set_arg_by_uart(u_int8_t cmd);                       //根据串口数据设置参数
+    void uart_cmd_reply_query(int type = 0);
 
-    virtual void init_serial_param(){}                      //初始化串口参数，派生类需重载
+    virtual void init_serial_param() = 0;                      //初始化串口参数，派生类需重载
     virtual bool data_is_cmd() = 0;                           //接收到的是否是串口命令
-    virtual void set_arg_by_uart() = 0;                       //根据串口数据设置参数
-    virtual void uart_cmd_reply_query(int type = -1)=0;
+
+    virtual bool check_sum() = 0;
+    virtual u_int8_t get_cmd_from_pkt() = 0;
     virtual u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len) = 0;
 
 signals:

@@ -1,10 +1,12 @@
 #include "uart_handler.h"
-
+#include "sbt_cmd_define.h"
 uart_handler::uart_handler()
 {
     btl = QSerialPort::Baud115200;
     memset(arg, 0, sizeof(arg));
     memset(last_arg, 0, sizeof(last_arg));
+    cmds = &cmd_infos[0];
+    cmd_count = sizeof(cmd_infos) / sizeof(cmd_info);
 }
 
 uart_handler::~uart_handler()
@@ -53,12 +55,14 @@ void uart_handler::uart_recvie()
         return;
     }
     udata = serial->readLine();
-
     if (data_is_cmd()){
+        if (!check_sum()){
+            return;
+        }
         log_to_ui(udata.toHex().data());
-        set_arg_by_uart();
-        if (memcmp(arg, last_arg, stat_len)){
-            memcpy(last_arg, arg, stat_len);
+        set_arg_by_uart(get_cmd_from_pkt());
+        if (memcmp(arg, last_arg, sizeof(arg))){
+            memcpy(last_arg, arg, sizeof(arg));
             emit signal_for_uart_to_ui(ARG_CHANGED);
         }
     }else{
@@ -66,5 +70,36 @@ void uart_handler::uart_recvie()
         udata.replace('\r', ' ');
         log_to_ui(udata);
     }
+}
+void uart_handler::set_arg_by_uart(u_int8_t cmd)
+{
+    u_int8_t *data = (u_int8_t *)udata.data();
+    bool found = false;
+    for (int i = 0; i < cmd_count; i++){
+        if (cmd == cmds[i].cmd){
+            memcpy(&arg[cmds[i].arg_index], &data[cmds[i].pkt_index], cmds[i].arg_len);
+            uart_cmd_reply_query(cmds[i].reply_type);
+            found = true;
+            log_to_ui(cmds[i].cmd_name);
+            break;
+        }
+    }
+    if (!found){
+        qDebug("cmd:%u not defined!", cmd);
+    }
+}
+void uart_handler::uart_cmd_reply_query(int type)
+{
+    u_int8_t len;
+    u_int8_t *pkt;
 
+    for (int i = 0; i < cmd_count; i++){
+        if (type == cmds[i].reply_type){
+            len = cmds[i].reply_len;
+            pkt = generate_uart_reply_pkt(type, &arg[cmds[i].reply_index], &len);
+            uart_send(pkt, len);
+            free(pkt);
+            break;
+        }
+    }
 }

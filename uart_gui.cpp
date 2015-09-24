@@ -19,7 +19,7 @@ void uart_gui::set_arg_by_ui()
         n = sw.swis[i].lineedit->text().toInt();
         uhd->arg[index] = n;
     }
-    memcpy(uhd->last_arg, uhd->arg, uhd->stat_len);
+    memcpy(uhd->last_arg, uhd->arg, sizeof(uhd->arg));
     uhd->uart_cmd_reply_query();
 }
 
@@ -30,7 +30,6 @@ uart_gui::uart_gui(uart_handler *hd)
     count = 0;
     sw.swi_count = 0;
     role = QFormLayout::LabelRole;
-    uhd->set_stat_len(sizeof(uart_stat_arg));
     init_base_widgets();
     init_connections();
     init_layout();
