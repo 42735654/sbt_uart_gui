@@ -287,7 +287,7 @@ debug/moc_uart_gui.cpp: D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QCom
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/QDebug \
 		../include/uart_gui.h
-	D:\software\Qt5.5\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/software/Qt5.5/5.5/mingw492_32/mkspecs/win32-g++ -IF:/self/qt_project/uart_gui -IF:/self/qt_project/uart_gui/include -IF:/self/qt_project/uart_gui/include/sbt -ID:/software/Qt5.5/5.5/mingw492_32/include -ID:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets -ID:/software/Qt5.5/5.5/mingw492_32/include/QtGui -ID:/software/Qt5.5/5.5/mingw492_32/include/QtANGLE -ID:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPort -ID:/software/Qt5.5/5.5/mingw492_32/include/QtCore -I. ..\include\uart_gui.h -o debug\moc_uart_gui.cpp
+	D:\software\Qt5.5\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/software/Qt5.5/5.5/mingw492_32/mkspecs/win32-g++ -IF:/self/uart_gui -IF:/self/uart_gui/include -IF:/self/uart_gui/include/sbt -ID:/software/Qt5.5/5.5/mingw492_32/include -ID:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets -ID:/software/Qt5.5/5.5/mingw492_32/include/QtGui -ID:/software/Qt5.5/5.5/mingw492_32/include/QtANGLE -ID:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPort -ID:/software/Qt5.5/5.5/mingw492_32/include/QtCore -I. ..\include\uart_gui.h -o debug\moc_uart_gui.cpp
 
 debug/moc_uart_handler.cpp: D:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPort/QSerialPort \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPort/qserialport.h \
@@ -413,7 +413,7 @@ debug/moc_uart_handler.cpp: D:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPo
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		../include/uart_handler.h
-	D:\software\Qt5.5\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/software/Qt5.5/5.5/mingw492_32/mkspecs/win32-g++ -IF:/self/qt_project/uart_gui -IF:/self/qt_project/uart_gui/include -IF:/self/qt_project/uart_gui/include/sbt -ID:/software/Qt5.5/5.5/mingw492_32/include -ID:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets -ID:/software/Qt5.5/5.5/mingw492_32/include/QtGui -ID:/software/Qt5.5/5.5/mingw492_32/include/QtANGLE -ID:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPort -ID:/software/Qt5.5/5.5/mingw492_32/include/QtCore -I. ..\include\uart_handler.h -o debug\moc_uart_handler.cpp
+	D:\software\Qt5.5\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/software/Qt5.5/5.5/mingw492_32/mkspecs/win32-g++ -IF:/self/uart_gui -IF:/self/uart_gui/include -IF:/self/uart_gui/include/sbt -ID:/software/Qt5.5/5.5/mingw492_32/include -ID:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets -ID:/software/Qt5.5/5.5/mingw492_32/include/QtGui -ID:/software/Qt5.5/5.5/mingw492_32/include/QtANGLE -ID:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPort -ID:/software/Qt5.5/5.5/mingw492_32/include/QtCore -I. ..\include\uart_handler.h -o debug\moc_uart_handler.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
