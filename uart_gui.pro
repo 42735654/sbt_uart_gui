@@ -32,8 +32,9 @@ SOURCES += $${PROJECT_SRC_DIR}/$${PROJECT_NAME}_uart_handler.cpp \
 HEADERS  += $${COM_INC_DIR}/uart_gui.h \
 			$${COM_INC_DIR}/uart_handler.h \
 			$${COM_INC_DIR}/config.h \
-			$${COM_INC_DIR}/dev_type_chose.h \
+			$${COM_INC_DIR}/dev_type_ui_chose.h \
 			$${COM_INC_DIR}/type_def.h \
+    include/dev_type_cmd_chose.h
 
 HEADERS += $${PROJECT_INC_DIR}/$${PROJECT_NAME}_uart_handler.h \
 			$${PROJECT_INC_DIR}/$${PROJECT_NAME}_ui_define.h \

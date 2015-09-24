@@ -1,5 +1,5 @@
 #include "uart_handler.h"
-#include "sbt_cmd_define.h"
+#include "dev_type_cmd_chose.h"
 uart_handler::uart_handler()
 {
     btl = QSerialPort::Baud115200;

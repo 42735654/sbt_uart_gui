@@ -1,5 +1,5 @@
 #include "uart_gui.h"
-#include "dev_type_chose.h"
+#include "dev_type_ui_chose.h"
 
 void uart_gui::set_ui_by_arg()
 {

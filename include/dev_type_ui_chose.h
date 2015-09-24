@@ -6,8 +6,5 @@
 #include "sbt_ui_define.h"
 #endif
 
-
-
-
 #endif // DEV_TYPE_CHOSE
 
