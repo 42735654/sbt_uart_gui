@@ -4,61 +4,30 @@
 #include <QSerialPortInfo>
 #include <uart_handler.h>
 #include <QByteArray>
+#include "config.h"
+#include "type_def.h"
+#define SBT_UART_CMD_WORK_STAT_SET  1
+#define SBT_UART_CMD_SPECIAL_SET  2
+#define SBT_UART_CMD_TIME_SET  4
+#define SBT_UART_CMD_AUTO_SET  5
+#define SBT_UART_CMD_QUERY			6
+#define SBT_UART_CMD_WIFI_STAT		7
+#define SBT_UART_CMD_QUERY_REPLY	100
+#define SBT_UART_CMD_TEST			101
 
-typedef unsigned char u_int8_t;
-typedef struct{
-    u_int8_t temp;
-    u_int8_t wind;
-    u_int8_t mode;
-    u_int8_t power;
 
-    u_int8_t auto_mode;
-    u_int8_t temp_makeup;
-    u_int8_t low_temp;
-    u_int8_t wind_power;
-
-    u_int8_t temp_rd;
-    u_int8_t low_mode;
-    u_int8_t max_temp;
-    u_int8_t min_temp;
-
-    u_int8_t lock;
-    u_int8_t temp_dev;
-    u_int8_t broadcast_mode;
-    u_int8_t no_money;
-
-    u_int8_t ext_dev_max_temp;
-    u_int8_t pad;
-    u_int8_t house_temp_int;
-    u_int8_t house_temp_dot;
-
-    u_int8_t h;
-    u_int8_t m;
-    u_int8_t s;
-    u_int8_t w;
-
-    u_int8_t time_table[24];
-}uart_stat_arg;
-#define GET_INDEX_BY_NAME(type, name)     (&((type *)0)->name - (u_int8_t *)((type *)0))
-
-#define GET_SBT_INDEX(name)   GET_INDEX_BY_NAME(uart_stat_arg, name)
 class sbt_uart_handler:public uart_handler
 {
 public:
-    typedef enum {
-        US_NONE,
-        US_SYNC2,
-        US_DATA,
-    }sbtwkq_us_t;
     sbt_uart_handler();
     virtual ~sbt_uart_handler();
 
     void init_serial_param();
     bool data_is_cmd();
     void set_arg_by_uart();
-//    void uart_recvie();
+
     u_int8_t sbtwkq_checksum_calc(u_int8_t *buf, u_int8_t len);
-    void uart_cmd_reply_query();
+    void uart_cmd_reply_query(int type = -1);
     u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len);
 };
 

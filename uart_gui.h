@@ -13,24 +13,9 @@
 #include <QFormLayout>
 #include <QDebug>
 #include <QByteArray>
-#define MAX_WIDGETS_NUM    50
-typedef unsigned char u_int8_t;
-typedef struct{
-    int index_in_arg;
-    const char *widget_name;
-}status_widgets_info;
-
-typedef struct{
-    QLabel *label;
-    QLineEdit *lineedit;
-    status_widgets_info *swi;
-}widgets_t;
-
-typedef struct{
-    widgets_t swis[MAX_WIDGETS_NUM];
-    int swi_count;
-}widgets_list;
-
+#include "type_def.h"
+#include "config.h"
+#include "type_def.h"
 class uart_gui:public QMainWindow
 {
     Q_OBJECT
@@ -58,14 +43,15 @@ private:
     void init_layout();                     //初始化布局
     void init_serial_port_list();            //初始化串口列表
     void init_connections();                //初始化内部信号与曹
+    void add_widget_by_info(status_widgets_info *swi);                      //根据描述添加控件
+    virtual void set_ui_by_arg();                   //根据参数设置控件显示
+
 public:
     uart_gui(uart_handler *hd);
     virtual ~uart_gui();
     void add_widgets(QWidget *any_widgets, bool full_row = false);  //向控件布局中添加一个控件
-    void add_widget_by_info(status_widgets_info *swi);                      //根据描述添加控件
     void add_widgets_by_infos(status_widgets_info *swi, int count);     //根据描述列表添加控件
 
-    virtual void set_ui_by_arg();                   //根据参数设置控件显示
 
 public slots:
     void on_port_index_currentIndexChanged(const QString &arg1);        //串口选择改变时
@@ -75,6 +61,7 @@ public slots:
     void handle_uart_to_ui_signal(uart_handler::signal_type t);
     virtual void set_arg_by_ui();                   //根据UI控件设置参数
     void clear_browser(){uart_log->clear();}
+
 protected:
     uart_handler *uhd;                         //串口操作类
 };

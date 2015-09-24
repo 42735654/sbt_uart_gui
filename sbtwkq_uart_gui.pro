@@ -20,7 +20,12 @@ SOURCES += main.cpp\
 HEADERS  += \
     uart_gui.h \
     uart_handler.h \
-    sbt_uart_handler.h
+    sbt_uart_handler.h \
+    config.h \
+    dev_type_chose.h \
+    type_def.h \
+    sbt_ui_define.h \
+    sbt_type_define.h
 
 
 FORMS    +=

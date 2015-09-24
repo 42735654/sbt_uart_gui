@@ -16,7 +16,6 @@ void uart_handler::log_to_ui(QString s)
     emit s_log_to_ui(s);
 }
 
-
 bool uart_handler::open_serial_port(QString port_name)
 {
     if(serial){
@@ -30,11 +29,7 @@ bool uart_handler::open_serial_port(QString port_name)
 }
 void uart_handler::begin_to_recvie()
 {
-    //    if (recv_pthread->isRunning()){
-    //        return;
-    //    }
     uart_recvie();
-    //    recv_pthread->start();
 }
 
 int uart_handler::uart_send(u_int8_t *buf, u_int8_t len)
@@ -72,13 +67,4 @@ void uart_handler::uart_recvie()
         log_to_ui(udata);
     }
 
-}
-uart_recv_pthread::uart_recv_pthread(uart_handler *hd)
-{
-    uhd = hd;
-}
-
-void uart_recv_pthread::run()
-{
-    uhd->uart_recvie();
 }

@@ -1,13 +1,13 @@
 #include "uart_gui.h"
+#include "dev_type_chose.h"
+
 void uart_gui::set_ui_by_arg()
 {
-//    qDebug("set_ui_by_arg");
     u_int8_t n, index;
     for (int i = 0; i < sw.swi_count; i++){
         index = (sw.swis[i].swi)->index_in_arg;
         n = uhd->arg[index];
         sw.swis[i].lineedit->setText(QString::number(n));
-//        qDebug("set line %s to %u", (sw.swis[i].swi)->widget_name, n);
     }
 }
 
@@ -18,7 +18,6 @@ void uart_gui::set_arg_by_ui()
         index = (sw.swis[i].swi)->index_in_arg;
         n = sw.swis[i].lineedit->text().toInt();
         uhd->arg[index] = n;
-//        qDebug("arg[%d]=%u", index, uhd->arg[index]);
     }
     memcpy(uhd->last_arg, uhd->arg, uhd->stat_len);
     uhd->uart_cmd_reply_query();
@@ -31,10 +30,11 @@ uart_gui::uart_gui(uart_handler *hd)
     count = 0;
     sw.swi_count = 0;
     role = QFormLayout::LabelRole;
-
+    uhd->set_stat_len(sizeof(uart_stat_arg));
     init_base_widgets();
     init_connections();
     init_layout();
+    add_widgets_by_infos(self_widgets, sizeof(self_widgets) / sizeof(status_widgets_info));
     init_serial_port_list();
 
     this->resize(800, 480);
