@@ -4,6 +4,7 @@
 #include "type_def.h"
 #include "config.h"
 #define GET_SBT_INDEX(name)   GET_INDEX_BY_NAME(uart_stat_arg, name)
+//用来表示下位机的状态数据结构,名字不能变
 typedef struct{
     u_int8_t temp;
     u_int8_t wind;

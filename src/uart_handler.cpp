@@ -3,8 +3,8 @@
 uart_handler::uart_handler()
 {
     btl = QSerialPort::Baud115200;
-    memset(arg, 0, sizeof(arg));
-    memset(last_arg, 0, sizeof(last_arg));
+    memset(arg, 1, sizeof(arg));
+    memset(last_arg, 1, sizeof(last_arg));
     cmds = &cmd_infos[0];
     cmd_count = sizeof(cmd_infos) / sizeof(cmd_info);
 }

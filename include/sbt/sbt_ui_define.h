@@ -1,6 +1,7 @@
 #ifndef SBT_UI_DEFINE
 #define SBT_UI_DEFINE
 #include "sbt_type_define.h"
+//数组名称不能变，在uart_gui.cpp中用来初始化界面，每一项对应一个label和输入框
 status_widgets_info  self_widgets[] = {
     {GET_SBT_INDEX( temp), "温度"},
     {GET_SBT_INDEX(wind), "风速"},
