@@ -92,7 +92,9 @@ void uart_handler::uart_cmd_reply_query(int type)
 {
     u_int8_t len;
     u_int8_t *pkt;
-
+    if (type == -1){
+        return;
+    }
     for (int i = 0; i < cmd_count; i++){
         if (type == cmds[i].reply_type){
             len = cmds[i].reply_len;

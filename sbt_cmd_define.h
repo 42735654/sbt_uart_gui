@@ -14,7 +14,7 @@ cmd_info cmd_infos[] = {
     {"时间设置", 4, 20, 4, INDEX_8, REPLY_TYPE_100, INDEX_0, sizeof(uart_stat_arg)},
     {"自动模式参数设置", 5, 24, 24, INDEX_8, REPLY_TYPE_100, INDEX_0, sizeof(uart_stat_arg)},
     {"查询状态", 6, 0, 0, INDEX_8, REPLY_TYPE_100, INDEX_0, sizeof(uart_stat_arg)},
-    {"wifi状态下发", 7, 0, 0, INDEX_8, REPLY_TYPE_101, INDEX_0, sizeof(uart_stat_arg)},
+    {"wifi状态下发", 7, 100, 1, INDEX_8, -1, INDEX_0, sizeof(uart_stat_arg)},
 };
 #endif // SBT_CMD_DEFINE
 

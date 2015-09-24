@@ -24,6 +24,7 @@ status_widgets_info  self_widgets[] = {
     {GET_SBT_INDEX(m), "分"},
     {GET_SBT_INDEX(s), "秒"},
     {GET_SBT_INDEX(w), "星期"},
+    {100, "WIFI状态"},
 };
 #endif // SBT_UI_DEFINE
 
