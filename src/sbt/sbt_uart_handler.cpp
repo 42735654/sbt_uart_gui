@@ -4,6 +4,8 @@ sbt_uart_handler::sbt_uart_handler()
 {
     serial = NULL;
     btl = QSerialPort::Baud9600;
+    show_table = new QPushButton("显示时间表");
+    connect(show_table, SIGNAL(clicked(bool)), this, SLOT(show_time_table());
 }
 
 sbt_uart_handler::~sbt_uart_handler()
