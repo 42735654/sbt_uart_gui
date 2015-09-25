@@ -3,10 +3,6 @@
 #include "type_def.h"
 #include "sbt_type_define.h"
 
-#define INDEX_8  8
-#define REPLY_TYPE_100	100
-#define REPLY_TYPE_101	101
-#define INDEX_0 0
 //数组名称不能变，在uart_handler.cpp中用来解析命令
 //命令名称， 命令号， 在参数中占得空间起始地址， 占用长度，参数在报文中的索引，回复类型，回复数据在参数中的索引，回复长度
 cmd_info cmd_infos[] = {

@@ -1,11 +1,12 @@
 #ifndef TYPE_DEF
 #define TYPE_DEF
-#include <QLabel>
-#include <QLineEdit>
+#include <QWidget>
 #include "config.h"
 #define MAX_WIDGETS_NUM    50
 #define UART_STAT_BUF_LEN       512
 #define GET_INDEX_BY_NAME(type, name)     (&((type *)0)->name - (u_int8_t *)((type *)0))
+#define SHOW_TIME_TABLE        -1
+
 
 typedef unsigned char u_int8_t;
 //命令名称， 命令号， 在参数中占得空间起始地址， 占用长度，参数在报文中的索引，回复类型，回复数据在参数中的索引，回复长度
@@ -26,14 +27,17 @@ typedef struct{
 }status_widgets_info;
 
 typedef struct{
-    QLabel *label;
-    QLineEdit *lineedit;
+    QWidget *label;
+    QWidget *lineedit;
+    QWidget *self_widget;
     status_widgets_info *swi;
 }widgets_t;
-//自定义控件列表
+
+//状态控件列表
 typedef struct{
     widgets_t swis[MAX_WIDGETS_NUM];
     int swi_count;
 }widgets_list;
+
 #endif // TYPE_DEF
 

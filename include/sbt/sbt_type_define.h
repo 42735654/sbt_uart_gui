@@ -3,6 +3,10 @@
 #include "uart_gui.h"
 #include "type_def.h"
 #include "config.h"
+#define INDEX_8  8
+#define REPLY_TYPE_100	100
+#define REPLY_TYPE_101	101
+#define INDEX_0 0
 #define GET_SBT_INDEX(name)   GET_INDEX_BY_NAME(uart_stat_arg, name)
 //用来表示下位机的状态数据结构,名字不能变
 typedef struct{
@@ -35,7 +39,8 @@ typedef struct{
     u_int8_t m;
     u_int8_t s;
     u_int8_t w;
-    u_int8_t time_table[24];
+    u_int8_t time_table_begin;
+    u_int8_t time_table[23];
 }uart_stat_arg;
 
 

@@ -4,8 +4,6 @@ sbt_uart_handler::sbt_uart_handler()
 {
     serial = NULL;
     btl = QSerialPort::Baud9600;
-    show_table = new QPushButton("显示时间表");
-    connect(show_table, SIGNAL(clicked(bool)), this, SLOT(show_time_table());
 }
 
 sbt_uart_handler::~sbt_uart_handler()
@@ -85,4 +83,32 @@ u_int8_t sbt_uart_handler::sbtwkq_checksum_calc(u_int8_t *buf, u_int8_t len)
 u_int8_t sbt_uart_handler::get_cmd_from_pkt()
 {
     return udata.data()[2];
+}
+void sbt_uart_handler::init_self_widgets(int type, widgets_t *w)
+{
+    switch (type){
+        case SHOW_TIME_TABLE:
+            w->self_widget = new QPushButton(w->swi->widget_name);
+            connect((QPushButton *)w->self_widget, SIGNAL(clicked(bool)), this, SLOT(show_time_table()));
+            break;
+        default:
+            break;
+    }
+}
+void sbt_uart_handler::show_time_table()
+{
+    QString log;
+    u_int8_t *table = &arg[GET_SBT_INDEX(time_table_begin)];
+    int i = 0;
+    log.sprintf("时间---温度");
+    log_to_ui(log);
+    log.sprintf("[1] %u---%u, %u---%u, %u---%u, %u---%u",
+                    table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++]);
+    log_to_ui(log);
+    log.sprintf("[2] %u---%u, %u---%u, %u---%u, %u---%u",
+                    table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++]);
+    log_to_ui(log);
+    log.sprintf("[3] %u---%u, %u---%u, %u---%u, %u---%u",
+                    table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++]);
+    log_to_ui(log);
 }

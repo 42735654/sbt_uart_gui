@@ -20,7 +20,6 @@ public:
     QSerialPort::BaudRate btl;  //波特率
     u_int8_t arg[UART_STAT_BUF_LEN];              //项目相关参数，对应到ui中的控件显示
     u_int8_t last_arg[UART_STAT_BUF_LEN];              //备份参数
-
     enum signal_type{
         ARG_CHANGED = 0,
     };
@@ -40,6 +39,7 @@ public:
 
     virtual void init_serial_param() = 0;                      //初始化串口参数，派生类需重载
     virtual bool data_is_cmd() = 0;                           //接收到的是否是串口命令
+    virtual void init_self_widgets(int type, widgets_t *w) = 0;
 
     virtual bool check_sum() = 0;
     virtual u_int8_t get_cmd_from_pkt() = 0;
@@ -52,6 +52,7 @@ signals:
 public slots:
     void begin_to_recvie();
     void slot_uart_send(u_int8_t *buf, u_int8_t len){uart_send(buf, len);}
+    virtual void show_time_table() = 0;
 };
 
 

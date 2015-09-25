@@ -5,9 +5,12 @@ void uart_gui::set_ui_by_arg()
 {
     u_int8_t n, index;
     for (int i = 0; i < sw.swi_count; i++){
+        if (sw.swis[i].swi->index_in_arg < 0){
+            continue;
+        }
         index = (sw.swis[i].swi)->index_in_arg;
         n = uhd->arg[index];
-        sw.swis[i].lineedit->setText(QString::number(n));
+        ((QLineEdit *)sw.swis[i].lineedit)->setText(QString::number(n));
     }
 }
 
@@ -15,8 +18,11 @@ void uart_gui::set_arg_by_ui()
 {
     u_int8_t n, index;
     for (int i = 0; i < sw.swi_count; i++){
+        if (sw.swis[i].swi->index_in_arg < 0){
+            continue;
+        }
         index = (sw.swis[i].swi)->index_in_arg;
-        n = sw.swis[i].lineedit->text().toInt();
+        n = ((QLineEdit *)sw.swis[i].lineedit)->text().toInt();
         uhd->arg[index] = n;
     }
     memcpy(uhd->last_arg, uhd->arg, sizeof(uhd->arg));
@@ -40,16 +46,19 @@ uart_gui::uart_gui(uart_handler *hd)
 }
 void uart_gui::add_widget_by_info(status_widgets_info *swi)
 {
-    if (count % 2){
-        add_widgets(&space);
+    if (swi->index_in_arg < 0){
+            uhd->init_self_widgets(swi->index_in_arg, &sw.swis[sw.swi_count]);
+            add_widgets(sw.swis[sw.swi_count].self_widget);
+    }else{
+        if (count % 2){
+            add_widgets(&space);
+        }
+        sw.swis[sw.swi_count].label = new QLabel(swi->widget_name);
+        sw.swis[sw.swi_count].lineedit = new QLineEdit();
+        add_widgets(sw.swis[sw.swi_count].label);
+        add_widgets(sw.swis[sw.swi_count].lineedit);
     }
-    sw.swis[sw.swi_count].label = new QLabel(swi->widget_name);
-    sw.swis[sw.swi_count].lineedit = new QLineEdit();
-
-    add_widgets(sw.swis[sw.swi_count].label);
-    add_widgets(sw.swis[sw.swi_count].lineedit);
     sw.swi_count++;
-
 }
 void uart_gui::add_widgets_by_infos(status_widgets_info *swi, int count)
 {
