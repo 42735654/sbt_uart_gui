@@ -9,11 +9,12 @@ QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-PROJECT_NAME = sbt
-COM_INC_DIR = ./include
-COM_SRC_DIR = ./src
-PROJECT_INC_DIR = ./include/$${PROJECT_NAME}
-PROJECT_SRC_DIR = ./src/$${PROJECT_NAME}
+PROJECT_NAME = camlight
+DEFINES += DEV_CAMLIGHT
+COM_INC_DIR = ../../include
+COM_SRC_DIR = ../../src
+PROJECT_INC_DIR = ../../include/$${PROJECT_NAME}
+PROJECT_SRC_DIR = ../../src/$${PROJECT_NAME}
 
 INCLUDEPATH += $${COM_INC_DIR}/
 INCLUDEPATH += $${PROJECT_INC_DIR}/

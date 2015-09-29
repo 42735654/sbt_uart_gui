@@ -1,5 +1,5 @@
 #include "sbt_uart_handler.h"
-
+sbt_uart_handler hd;
 sbt_uart_handler::sbt_uart_handler()
 {
     serial = NULL;
@@ -10,6 +10,14 @@ sbt_uart_handler::~sbt_uart_handler()
 {
     if (serial){
         delete serial;
+    }
+}
+bool sbt_uart_handler::can_read_uart()
+{
+    if (serial->canReadLine()){
+        return true;
+    }else{
+        return false;
     }
 }
 

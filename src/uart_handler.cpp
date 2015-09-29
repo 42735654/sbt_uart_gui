@@ -3,8 +3,8 @@
 uart_handler::uart_handler()
 {
     btl = QSerialPort::Baud115200;
-    memset(arg, 1, sizeof(arg));
-    memset(last_arg, 1, sizeof(last_arg));
+    memset(arg, 0, sizeof(arg));
+    memset(last_arg, 0, sizeof(last_arg));
     cmds = &cmd_infos[0];
     cmd_count = sizeof(cmd_infos) / sizeof(cmd_info);
 }
@@ -51,7 +51,7 @@ int uart_handler::uart_send(u_int8_t *buf, u_int8_t len)
 }
 void uart_handler::uart_recvie()
 {
-    if (!serial->canReadLine()){
+    if (!can_read_uart()){
         return;
     }
     udata = serial->readLine();
@@ -99,6 +99,7 @@ void uart_handler::uart_cmd_reply_query(int type)
         if (type == cmds[i].reply_type){
             len = cmds[i].reply_len;
             pkt = generate_uart_reply_pkt(type, &arg[cmds[i].reply_index], &len);
+
             uart_send(pkt, len);
             free(pkt);
             break;

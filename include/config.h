@@ -3,7 +3,6 @@
 
 #define DEBUG_LOG       1
 
-#define DEV_TYPE_SBT    1
 
 #endif // CONFIG_H
 
