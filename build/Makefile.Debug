@@ -274,12 +274,12 @@ debug/moc_uart_gui.cpp: D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QCom
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qthread.h \
 		../include/config.h \
 		../include/type_def.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QGridLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QStackedLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qstackedlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QFormLayout \
@@ -358,9 +358,7 @@ debug/moc_uart_handler.cpp: D:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPo
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qthread.h \
 		../include/config.h \
 		../include/type_def.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLabel \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlabel.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qframe.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qwidget.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs_win.h \
@@ -406,12 +404,6 @@ debug/moc_uart_handler.cpp: D:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPo
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qfiledevice.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qvector2d.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtouchdevice.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLineEdit \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlineedit.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextcursor.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextformat.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		../include/uart_handler.h
 	D:\software\Qt5.5\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/software/Qt5.5/5.5/mingw492_32/mkspecs/win32-g++ -IF:/self/qt_project/uart_gui -IF:/self/qt_project/uart_gui/include -IF:/self/qt_project/uart_gui/include/sbt -ID:/software/Qt5.5/5.5/mingw492_32/include -ID:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets -ID:/software/Qt5.5/5.5/mingw492_32/include/QtGui -ID:/software/Qt5.5/5.5/mingw492_32/include/QtANGLE -ID:/software/Qt5.5/5.5/mingw492_32/include/QtSerialPort -ID:/software/Qt5.5/5.5/mingw492_32/include/QtCore -I. ..\include\uart_handler.h -o debug\moc_uart_handler.cpp
 
@@ -502,9 +494,7 @@ debug/main.o: ../src/main.cpp ../include/sbt/sbt_uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qthread.h \
 		../include/config.h \
 		../include/type_def.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLabel \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlabel.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qframe.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qwidget.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs_win.h \
@@ -550,12 +540,6 @@ debug/main.o: ../src/main.cpp ../include/sbt/sbt_uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qfiledevice.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qvector2d.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtouchdevice.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLineEdit \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlineedit.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextcursor.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextformat.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		../include/sbt/sbt_type_define.h \
 		../include/uart_gui.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QComboBox \
@@ -572,7 +556,16 @@ debug/main.o: ../src/main.cpp ../include/sbt/sbt_uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qtabbar.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qrubberband.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qframe.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qabstractitemmodel.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLineEdit \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlineedit.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextcursor.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextformat.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLabel \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlabel.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qpushbutton.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qabstractbutton.h \
@@ -588,7 +581,6 @@ debug/main.o: ../src/main.cpp ../include/sbt/sbt_uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QStackedLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qstackedlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QFormLayout \
@@ -674,9 +666,7 @@ debug/uart_handler.o: ../src/uart_handler.cpp ../include/uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qthread.h \
 		../include/config.h \
 		../include/type_def.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLabel \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlabel.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qframe.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qwidget.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs_win.h \
@@ -722,12 +712,6 @@ debug/uart_handler.o: ../src/uart_handler.cpp ../include/uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qfiledevice.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qvector2d.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtouchdevice.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLineEdit \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlineedit.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextcursor.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextformat.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		../include/dev_type_cmd_chose.h \
 		../include/sbt/sbt_cmd_define.h \
 		../include/sbt/sbt_type_define.h \
@@ -746,7 +730,16 @@ debug/uart_handler.o: ../src/uart_handler.cpp ../include/uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qtabbar.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qrubberband.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qframe.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qabstractitemmodel.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLineEdit \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlineedit.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextcursor.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextformat.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLabel \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlabel.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qpushbutton.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qabstractbutton.h \
@@ -762,7 +755,6 @@ debug/uart_handler.o: ../src/uart_handler.cpp ../include/uart_handler.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QStackedLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qstackedlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QFormLayout \
@@ -921,12 +913,12 @@ debug/uart_gui.o: ../src/uart_gui.cpp ../include/uart_gui.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qthread.h \
 		../include/config.h \
 		../include/type_def.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QGridLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QStackedLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qstackedlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QFormLayout \
@@ -1009,9 +1001,7 @@ debug/sbt_uart_handler.o: ../src/sbt/sbt_uart_handler.cpp ../include/sbt/sbt_uar
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qthread.h \
 		../include/config.h \
 		../include/type_def.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLabel \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlabel.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qframe.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qwidget.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qwindowdefs_win.h \
@@ -1057,12 +1047,6 @@ debug/sbt_uart_handler.o: ../src/sbt/sbt_uart_handler.cpp ../include/sbt/sbt_uar
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qfiledevice.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qvector2d.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtouchdevice.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLineEdit \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlineedit.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextcursor.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextformat.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		../include/sbt/sbt_type_define.h \
 		../include/uart_gui.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QComboBox \
@@ -1079,7 +1063,16 @@ debug/sbt_uart_handler.o: ../src/sbt/sbt_uart_handler.cpp ../include/sbt/sbt_uar
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qtabbar.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qrubberband.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qframe.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtCore/qabstractitemmodel.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLineEdit \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlineedit.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextcursor.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextformat.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qpen.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtGui/qtextoption.h \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QLabel \
+		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlabel.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qpushbutton.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qabstractbutton.h \
@@ -1095,7 +1088,6 @@ debug/sbt_uart_handler.o: ../src/sbt/sbt_uart_handler.cpp ../include/sbt/sbt_uar
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
-		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QWidget \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QStackedLayout \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/qstackedlayout.h \
 		D:/software/Qt5.5/5.5/mingw492_32/include/QtWidgets/QFormLayout \

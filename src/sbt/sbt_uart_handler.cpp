@@ -27,9 +27,10 @@ bool sbt_uart_handler::data_is_cmd()
 bool sbt_uart_handler::check_sum()
 {
     u_int8_t *data = (u_int8_t *)udata.data();
-    u_int8_t c = sbtwkq_checksum_calc(data, 8 + data[4]);
-    u_int8_t b =  data[8 + data[4]];
+    u_int8_t c = sbtwkq_checksum_calc(data, 5 + data[4]);
+    u_int8_t b =  data[5 + data[4]];
 #ifdef DEBUG_LOG
+    qDebug("%s", udata.toHex().data());
     qDebug("%u---%u", c, b);
 #endif
     if (c != b){
@@ -60,7 +61,7 @@ u_int8_t *sbt_uart_handler::generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *para
         cmd_buf[0] = 0xFF;
         cmd_buf[1] = 0xAA;
         cmd_buf[2] = cmd;
-        cmd_buf[4] = *len;
+        cmd_buf[4] = *len + 3;
         if (param){
             memcpy(&cmd_buf[8], param, *len);
         }
@@ -103,12 +104,13 @@ void sbt_uart_handler::show_time_table()
     log.sprintf("时间---温度");
     log_to_ui(log);
     log.sprintf("[1] %u---%u, %u---%u, %u---%u, %u---%u",
-                    table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++]);
+                    table[i],  table[i+1],  table[i+2],  table[i+3],  table[i+4],  table[i+5],  table[i+6],  table[i+7]);
+    i += 8;
     log_to_ui(log);
     log.sprintf("[2] %u---%u, %u---%u, %u---%u, %u---%u",
-                    table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++]);
+                    table[i],  table[i+1],  table[i+2],  table[i+3],  table[i+4],  table[i+5],  table[i+6],  table[i+7]);
     log_to_ui(log);
     log.sprintf("[3] %u---%u, %u---%u, %u---%u, %u---%u",
-                    table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++],  table[i++]);
+                    table[i],  table[i+1],  table[i+2],  table[i+3],  table[i+4],  table[i+5],  table[i+6],  table[i+7]);
     log_to_ui(log);
 }
