@@ -41,7 +41,6 @@ public:
     virtual bool data_is_cmd() = 0;                           //接收到的是否是串口命令
     virtual void init_self_widgets(int type, widgets_t *w) = 0;
     virtual bool can_read_uart() = 0;
-
     virtual bool check_sum() = 0;
     virtual u_int8_t get_cmd_from_pkt() = 0;
     virtual u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len) = 0;
