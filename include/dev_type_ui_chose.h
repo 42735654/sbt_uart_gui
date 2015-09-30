@@ -9,5 +9,9 @@
 #include "camlight_ui_define.h"
 #endif
 
+#ifdef DEV_SXDKL
+#include "sxdkl_ui_define.h"
+#endif
+
 #endif // DEV_TYPE_CHOSE
 
