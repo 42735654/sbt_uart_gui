@@ -63,6 +63,7 @@ void uart_handler::uart_recvie()
         set_arg_by_uart(get_cmd_from_pkt());
         if (memcmp(arg, last_arg, sizeof(arg))){
             memcpy(last_arg, arg, sizeof(arg));
+            update_arg(ARG_TO_UI);
             emit signal_for_uart_to_ui(ARG_CHANGED);
         }
     }else{

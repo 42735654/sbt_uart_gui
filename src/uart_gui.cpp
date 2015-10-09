@@ -26,7 +26,8 @@ void uart_gui::set_arg_by_ui()
         uhd->arg[index] = n;
     }
     memcpy(uhd->last_arg, uhd->arg, sizeof(uhd->arg));
-    uhd->uart_cmd_reply_query(2);
+    uhd->update_arg(uart_handler::UI_TO_ARG);
+    uhd->uart_cmd_reply_query(0);
 }
 
 uart_gui::uart_gui(uart_handler *hd)

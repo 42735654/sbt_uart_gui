@@ -4,7 +4,7 @@
 #include "config.h"
 #define MAX_WIDGETS_NUM    50
 #define UART_STAT_BUF_LEN       512
-#define GET_INDEX_BY_NAME(type, name)     (&((type *)0)->name - (u_int8_t *)((type *)0))
+#define GET_INDEX_BY_NAME(type, name)     ((u_int8_t *)&((type *)0)->name - (u_int8_t *)((type *)0))
 #define SHOW_TIME_TABLE        -1
 
 

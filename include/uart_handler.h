@@ -23,6 +23,10 @@ public:
     enum signal_type{
         ARG_CHANGED = 0,
     };
+    enum update_arg_type{
+        UI_TO_ARG,
+        ARG_TO_UI,
+    };
 protected:
     int cmd_count;
     cmd_info *cmds;
@@ -44,6 +48,7 @@ public:
     virtual bool check_sum() = 0;
     virtual u_int8_t get_cmd_from_pkt() = 0;
     virtual u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len) = 0;
+    virtual void update_arg(update_arg_type type) = 0;
 
 signals:
     void s_log_to_ui(QString s);                                  //输出信息到ui
