@@ -8,6 +8,10 @@
 #define REPLY_TYPE_101	101
 #define INDEX_0 0
 #define GET_SBT_INDEX(name)   GET_INDEX_BY_NAME(uart_stat_arg, name)
+
+#define PRODUCT_TEST_BOTTON     -200
+#define SET_WIFI_TO_AP     -201
+#define WIFI_RESET     -202
 //用来表示下位机的状态数据结构,名字不能变
 typedef struct{
     u_int8_t recv_suc:1;		//Bit0：数据接收：     0：失败   1：成功
@@ -81,6 +85,9 @@ typedef struct{
     u_int8_t anion;
     u_int8_t simulat_wood;
     u_int8_t temp_unit;
+
+    u_int8_t router_suc;
+    u_int8_t server_suc;
 }uart_stat_arg;
 
 

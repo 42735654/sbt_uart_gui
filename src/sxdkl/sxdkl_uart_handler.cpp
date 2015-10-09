@@ -14,7 +14,7 @@ sxdkl_uart_handler::~sxdkl_uart_handler()
 }
 bool sxdkl_uart_handler::can_read_uart()
 {
-    if (serial->bytesAvailable() >= 12){
+    if (serial->canReadLine()){
         return true;
     }else{
         return false;
@@ -64,9 +64,12 @@ u_int8_t *sxdkl_uart_handler::generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *pa
 {
         u_int8_t *cmd_buf = NULL;
         u_int8_t total_len = 13;
+        uart_stat_arg *ua = (uart_stat_arg *)arg;
+        ua->cmd_ack.recv_suc = 1;
         cmd_buf = (u_int8_t *)calloc(total_len, 1);
-
         memcpy(cmd_buf, param, *len);
+
+        cmd_buf[0] = 0xaa;
         cmd_buf[12] = sxdkl_checksum_calc(&cmd_buf[1], total_len - 2);
         *len = total_len;
         return cmd_buf;
@@ -89,8 +92,45 @@ u_int8_t sxdkl_uart_handler::get_cmd_from_pkt()
 }
 void sxdkl_uart_handler::init_self_widgets(int type, widgets_t *w)
 {
-    return;
+    switch (type){
+        case PRODUCT_TEST_BOTTON:
+            w->self_widget = new QPushButton(w->swi->widget_name);
+            connect((QPushButton *)w->self_widget, &QPushButton::clicked, &hd, &sxdkl_uart_handler::product_test_send);
+            break;
+    case SET_WIFI_TO_AP:
+        w->self_widget = new QPushButton(w->swi->widget_name);
+        connect((QPushButton *)w->self_widget, &QPushButton::clicked, &hd, &sxdkl_uart_handler::set_wifi_to_ap);
+        break;
+    case WIFI_RESET:
+        w->self_widget = new QPushButton(w->swi->widget_name);
+        connect((QPushButton *)w->self_widget, &QPushButton::clicked, &hd, &sxdkl_uart_handler::wifi_reset);
+        break;
+        default:
+            break;
+    }
 }
+void sxdkl_uart_handler::product_test_send()
+{
+    uart_stat_arg *ua = (uart_stat_arg *)arg;
+    ua->cmd_ack.wifi_test = 1;
+    uart_cmd_reply_query(0);
+     ua->cmd_ack.wifi_test = 0;
+}
+void sxdkl_uart_handler::set_wifi_to_ap()
+{
+    uart_stat_arg *ua = (uart_stat_arg *)arg;
+    ua->cmd_ack.wifi_disbind = 1;
+    uart_cmd_reply_query(0);
+     ua->cmd_ack.wifi_disbind = 0;
+}
+void sxdkl_uart_handler::wifi_reset()
+{
+    uart_stat_arg *ua = (uart_stat_arg *)arg;
+    ua->cmd_ack.reset = 1;
+    uart_cmd_reply_query(0);
+     ua->cmd_ack.reset = 0;
+}
+
 void sxdkl_uart_handler::update_arg(update_arg_type type)
 {
     uart_stat_arg *ua = (uart_stat_arg *)arg;
@@ -103,6 +143,8 @@ void sxdkl_uart_handler::update_arg(update_arg_type type)
             ua->simulat_wood = ua->lb.simulat_wood;
             ua->power = ua->fb.power;
             ua->temp_unit = ua->fb.temp_unit;
+            ua->router_suc = ua->wb.router_stat;
+            ua->server_suc = ua->wb.net_stat;
             break;
     case UI_TO_ARG:
         ua->fb.anion = ua->anion>0?1:0;
@@ -112,6 +154,9 @@ void sxdkl_uart_handler::update_arg(update_arg_type type)
         ua->lb.simulat_wood = ua->simulat_wood>0?1:0;
         ua->tb.on = ua->timer_on>0?1:0;
         ua->tb.hour = ua->timer_h>0?1:0;
+
+        ua->wb.router_stat = ua->router_suc > 0?1:0;
+        ua->wb.net_stat = ua->server_suc > 0?1:0;
         break;
     default:
         break;

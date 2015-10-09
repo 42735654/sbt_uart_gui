@@ -98,7 +98,7 @@ void sbt_uart_handler::init_self_widgets(int type, widgets_t *w)
     switch (type){
         case SHOW_TIME_TABLE:
             w->self_widget = new QPushButton(w->swi->widget_name);
-            connect((QPushButton *)w->self_widget, SIGNAL(clicked(bool)), this, SLOT(show_time_table()));
+            connect((QPushButton *)w->self_widget, &QPushButton::clicked, &hd, &sbt_uart_handler::show_time_table);
             break;
         default:
             break;

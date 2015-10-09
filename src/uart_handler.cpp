@@ -4,7 +4,7 @@ uart_handler::uart_handler()
 {
     btl = QSerialPort::Baud115200;
     memset(arg, 0, sizeof(arg));
-    memset(last_arg, 0, sizeof(last_arg));
+    memcpy(last_arg, arg, sizeof(arg));
     cmds = &cmd_infos[0];
     cmd_count = sizeof(cmd_infos) / sizeof(cmd_info);
 }
@@ -41,6 +41,10 @@ int uart_handler::uart_send(u_int8_t *buf, u_int8_t len)
         return 0;
     }
     QString log;
+
+    for (int i = 0; i < len; i++){
+        qDebug("buf[%u]=%d, arg[%u]=%d", i, buf[i], i, arg[i]);
+    }
     int has_send_len = serial->write((char *)buf, len);
     serial->flush();
     if (has_send_len != len){

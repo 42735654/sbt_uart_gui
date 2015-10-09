@@ -24,7 +24,7 @@ public:
     void init_self_widgets(int type, widgets_t *w);
     u_int8_t get_cmd_from_pkt();    //从收到的串口报文中获取命令号
     u_int8_t *generate_uart_reply_pkt(u_int8_t cmd, u_int8_t *param, u_int8_t *len);        //根据协议生成串口报文，用来发送给模组
-
+    void update_arg(update_arg_type type){}
 };
 
 #endif // SBT_UART_HANDLER_H

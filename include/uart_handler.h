@@ -57,6 +57,7 @@ signals:
 public slots:
     void begin_to_recvie();
     void slot_uart_send(u_int8_t *buf, u_int8_t len){uart_send(buf, len);}
+    //virtual void product_test_send(){}
 };
 
 
