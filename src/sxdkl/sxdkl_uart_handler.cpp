@@ -150,10 +150,10 @@ void sxdkl_uart_handler::update_arg(update_arg_type type)
         ua->fb.anion = ua->anion>0?1:0;
         ua->fb.power = ua->power>0?1:0;
         ua->fb.temp_unit = ua->temp_unit>0?1:0;
-        ua->lb.fire_level = ua->fire_level>0?1:0;
-        ua->lb.simulat_wood = ua->simulat_wood>0?1:0;
+        ua->lb.fire_level = ua->fire_level;
+        ua->lb.simulat_wood = ua->simulat_wood;
         ua->tb.on = ua->timer_on>0?1:0;
-        ua->tb.hour = ua->timer_h>0?1:0;
+        ua->tb.hour = ua->timer_h;
 
         ua->wb.router_stat = ua->router_suc > 0?1:0;
         ua->wb.net_stat = ua->server_suc > 0?1:0;
