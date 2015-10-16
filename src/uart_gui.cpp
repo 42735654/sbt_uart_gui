@@ -41,9 +41,10 @@ void uart_gui::init_log_file(QString filename)
     }
 }
 void uart_gui::__log_to_file(QString log){
-        *log_stream << log;
-        *log_stream << "\n";
-        log_stream->flush();
+    QMutexLocker locker(&mutex);
+    *log_stream << log;
+    *log_stream << "\n";
+    log_stream->flush();
 }
 uart_gui::uart_gui(uart_handler *hd)
 {

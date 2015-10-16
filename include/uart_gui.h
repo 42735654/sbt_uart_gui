@@ -15,6 +15,8 @@
 #include <QByteArray>
 #include <QTextStream>
 #include <QFile>
+#include <QMutex>
+#include <QMutexLocker>
 #include "type_def.h"
 #include "config.h"
 #include "type_def.h"
@@ -37,8 +39,10 @@ private:
     QFormLayout *widgets_layout;    //控件布局
     //自定义布局列表
     widgets_list sw;
+
     QTextStream* log_stream;
     QFile *log_file;
+    QMutex mutex;
     //自动添加控件的数据信息
     int rows;
     int role;
