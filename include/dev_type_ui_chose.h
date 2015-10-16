@@ -13,5 +13,9 @@
 #include "sxdkl_ui_define.h"
 #endif
 
-#endif // DEV_TYPE_CHOSE
+#ifdef DEV_ZGTEST
+#include "zgtest_ui_define.h"
+#endif
+
+#endif
 

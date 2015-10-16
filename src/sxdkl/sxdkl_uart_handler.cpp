@@ -137,7 +137,7 @@ void sxdkl_uart_handler::update_arg(update_arg_type type)
     switch(type){
         case ARG_TO_UI:
             ua->anion = ua->fb.anion;
-            ua->timer_on = ua->tb.on;
+            ua->timer_off = ua->tb.off;
             ua->timer_h = ua->tb.hour;
             ua->fire_level = ua->lb.fire_level;
             ua->simulat_wood = ua->lb.simulat_wood;
@@ -152,7 +152,7 @@ void sxdkl_uart_handler::update_arg(update_arg_type type)
         ua->fb.temp_unit = ua->temp_unit>0?1:0;
         ua->lb.fire_level = ua->fire_level;
         ua->lb.simulat_wood = ua->simulat_wood;
-        ua->tb.on = ua->timer_on>0?1:0;
+        ua->tb.off = ua->timer_off>0?1:0;
         ua->tb.hour = ua->timer_h;
 
         ua->wb.router_stat = ua->router_suc > 0?1:0;

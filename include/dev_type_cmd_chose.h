@@ -13,5 +13,10 @@
 #ifdef DEV_SXDKL
 #include "sxdkl_cmd_define.h"
 #endif
+
+#ifdef DEV_ZGTEST
+#include "zgtest_cmd_define.h"
+#endif
+
 #endif // DEV_TYPE_CMD_CHOSE
 

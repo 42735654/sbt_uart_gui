@@ -13,9 +13,12 @@
 #include <QFormLayout>
 #include <QDebug>
 #include <QByteArray>
+#include <QTextStream>
+#include <QFile>
 #include "type_def.h"
 #include "config.h"
 #include "type_def.h"
+
 class uart_gui:public QMainWindow
 {
     Q_OBJECT
@@ -34,11 +37,14 @@ private:
     QFormLayout *widgets_layout;    //控件布局
     //自定义布局列表
     widgets_list sw;
+    QTextStream* log_stream;
+    QFile *log_file;
     //自动添加控件的数据信息
     int rows;
     int role;
     int count;
 private:
+    void init_log_file(QString filename);
     void init_base_widgets();       //初始化基础控件
     void init_layout();                     //初始化布局
     void init_serial_port_list();            //初始化串口列表
@@ -58,6 +64,7 @@ public slots:
     void send_line_text();                                                                                  //发送按钮
     void text_browser_text_changed();                                                           //设置textbrower显示始终在最后一行
     void __log_to_ui(QString log);                                                                  //打印信息到textbrowser中
+    void __log_to_file(QString log);                   //打印信息到文件中
     void handle_uart_to_ui_signal(uart_handler::signal_type t);
     virtual void set_arg_by_ui();                   //根据UI控件设置参数
     void clear_browser(){uart_log->clear();}

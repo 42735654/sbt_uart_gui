@@ -7,7 +7,7 @@ status_widgets_info  self_widgets[] = {
     {SET_WIFI_TO_AP, "切换到AP模式"},
     {WIFI_RESET, "回复出厂"},
     {GET_INDEX_BY_NAME(uart_stat_arg, power), "开关"},
-    {GET_INDEX_BY_NAME(uart_stat_arg, timer_on), "定时开关"},
+    {GET_INDEX_BY_NAME(uart_stat_arg, timer_off), "关机定时器"},
     {GET_INDEX_BY_NAME(uart_stat_arg, timer_h), "定时-时"},
     {GET_INDEX_BY_NAME(uart_stat_arg, temp), "温度"},
     {GET_INDEX_BY_NAME(uart_stat_arg, temp_unit), "温度单位"},

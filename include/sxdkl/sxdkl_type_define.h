@@ -79,6 +79,7 @@ typedef struct{
     u_int8_t signal;
 
     u_int8_t timer_on;
+    u_int8_t timer_off;
     u_int8_t timer_h;
     u_int8_t power;
     u_int8_t fire_level;

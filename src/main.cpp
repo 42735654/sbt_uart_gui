@@ -1,9 +1,15 @@
 #if defined DEV_SBT
 #include "sbt_uart_handler.h"
+
 #elif defined DEV_CAMLIGHT
 #include "camlight_uart_handler.h"
+
 #elif defined DEV_SXDKL
 #include "sxdkl_uart_handler.h"
+
+#elif defined DEV_ZGTEST
+#include "zgtest_uart_handler.h"
+
 #endif
 
 #include "uart_gui.h"

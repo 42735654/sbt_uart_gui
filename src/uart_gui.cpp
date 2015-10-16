@@ -29,9 +29,27 @@ void uart_gui::set_arg_by_ui()
     uhd->update_arg(uart_handler::UI_TO_ARG);
     uhd->uart_cmd_reply_query(0);
 }
-
+void uart_gui::init_log_file(QString filename)
+{
+    delete log_stream;
+    delete log_file;
+    log_stream = new QTextStream;
+    log_file = new QFile(filename);
+    if (log_file->open(QIODevice::Append))
+    {
+        log_stream->setDevice(log_file);
+    }
+}
+void uart_gui::__log_to_file(QString log){
+        *log_stream << log;
+        *log_stream << "\n";
+        log_stream->flush();
+}
 uart_gui::uart_gui(uart_handler *hd)
 {
+    log_stream = NULL;
+    log_file = NULL;
+    init_log_file("./uart_gui.log");
     uhd = hd;
     rows = 0;
     count = 0;
@@ -96,6 +114,7 @@ void uart_gui::__log_to_ui(QString s)
 {
     QString __log = "[" + QTime::currentTime().toString() + "]"+ s;
     uart_log->append(__log);
+    __log_to_file(s);
 }
 
 void uart_gui::send_line_text()

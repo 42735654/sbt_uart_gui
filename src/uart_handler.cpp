@@ -42,9 +42,9 @@ int uart_handler::uart_send(u_int8_t *buf, u_int8_t len)
     }
     QString log;
 
-    for (int i = 0; i < len; i++){
-        qDebug("buf[%u]=%d, arg[%u]=%d", i, buf[i], i, arg[i]);
-    }
+//    for (int i = 0; i < len; i++){
+//        qDebug("buf[%u]=%d, arg[%u]=%d", i, buf[i], i, arg[i]);
+//    }
     int has_send_len = serial->write((char *)buf, len);
     serial->flush();
     if (has_send_len != len){
