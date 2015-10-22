@@ -30,10 +30,13 @@ typedef struct{
     u_int8_t wifi_result:1; 	//Bit3：wifi配网结果： 0：未直连；1：成功；
     u_int8_t wifi_test_res:1;	//Bit4: wifi厂测结果： 0：未直连；1：成功
     u_int8_t wifi_disbind_res:1;//Bit5：wifi解除绑定结果： 0：未直连；1：成功
-    u_int8_t pad:2;
+    u_int8_t wifi_mode:1;
+    u_int8_t pad:1;
 }wifi_bits;
 typedef struct {
-    u_int8_t pad : 3;
+    u_int8_t pad0 : 1;
+    u_int8_t pad1: 1;
+    u_int8_t pad2 : 1;
     u_int8_t light_switch : 1;	//bit3,灯光开关
     u_int8_t temp_unit : 1;    //bit 4,0-C，1-F
     u_int8_t anion : 1; 		//bit5, 负离子,0-关，1-开
@@ -89,6 +92,7 @@ typedef struct{
 
     u_int8_t router_suc;
     u_int8_t server_suc;
+    u_int8_t wifi_mode;
 }uart_stat_arg;
 
 

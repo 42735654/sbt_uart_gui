@@ -14,11 +14,19 @@ sxdkl_uart_handler::~sxdkl_uart_handler()
 }
 bool sxdkl_uart_handler::can_read_uart()
 {
+    if (serial->bytesAvailable() <12){
+        return false;
+    }else{
+        return true;
+    }
+
+    /*
     if (serial->canReadLine()){
         return true;
     }else{
         return false;
     }
+    */
 }
 
 bool sxdkl_uart_handler::data_is_cmd()
@@ -145,6 +153,7 @@ void sxdkl_uart_handler::update_arg(update_arg_type type)
             ua->temp_unit = ua->fb.temp_unit;
             ua->router_suc = ua->wb.router_stat;
             ua->server_suc = ua->wb.net_stat;
+            ua->wifi_mode = ua->wb.wifi_mode;
             break;
     case UI_TO_ARG:
         ua->fb.anion = ua->anion>0?1:0;
@@ -157,6 +166,7 @@ void sxdkl_uart_handler::update_arg(update_arg_type type)
 
         ua->wb.router_stat = ua->router_suc > 0?1:0;
         ua->wb.net_stat = ua->server_suc > 0?1:0;
+        ua->wb.wifi_mode = ua->wifi_mode > 0?1:0;
         break;
     default:
         break;

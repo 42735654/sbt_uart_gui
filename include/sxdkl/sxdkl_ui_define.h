@@ -18,6 +18,7 @@ status_widgets_info  self_widgets[] = {
 
     {GET_INDEX_BY_NAME(uart_stat_arg, router_suc), "路由器连接成功"},
     {GET_INDEX_BY_NAME(uart_stat_arg, server_suc), "服务器连接成功"},
+    {GET_INDEX_BY_NAME(uart_stat_arg, wifi_mode), "wifi模式"},
 };
 #endif // SBT_UI_DEFINE
 
