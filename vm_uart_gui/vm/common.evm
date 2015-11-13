@@ -1,0 +1,87 @@
+//函数ID对应功能：
+/*
+$uf0---设置初始化信息
+$uf1---串口处理
+$uf2---通用接口
+$uf3---
+$uf4---
+*/
+global8u 	SET_PARAM_ADDR = 0;
+global8u 	SET_PARAM_UI = 1;
+global8u 	SET_PARAM_UART = 2;
+
+global8u    UART_HANDLE_SEND = 0;
+global8u    UART_HANDLE_READ = 1;
+global8u    UART_HANDLE_READ_ALL = 2;
+global8u    UART_HANDLE_READLINE = 3;
+global8u    UART_HANDLE_PEEK = 4;
+global8u    UART_HANDLE_BYTES = 5;
+
+global8u 	TOOL_LOG = 0;
+global8u 	TOOL_REFRESH_UI = 1;
+global8u 	TOOL_SET_LINEEDIT = 2;
+//设置共享内存地址
+function set_addr_to_qt(call_id_addr, uart_stat_addr)
+{
+	return $uf0(SET_PARAM_ADDR, call_id_addr, uart_stat_addr);
+}
+//控件初始化
+function add_widget(widget)
+{
+	return $uf0(SET_PARAM_UI, widget);
+}
+//设置串口参数
+function set_baud_rate(btl)
+{
+	return $uf0(SET_PARAM_UART, btl);
+}
+//串口发送数据
+function uart_send(data, len)
+{
+	return $uf1(UART_HANDLE_SEND, data, len);
+}
+//读取指定长度的串口数据
+function uart_read(data, len)
+{
+	return $uf1(UART_HANDLE_READ, data, len);
+}
+//读取所有串口数据，最大长度为len
+function uart_read_all(data, len)
+{
+	return $uf1(UART_HANDLE_READ_ALL, data, len);
+}
+//读取一行数据，由\n结束，缓冲区长度为len
+function uart_read_line(data, len)
+{
+	return $uf1(UART_HANDLE_READLINE, data, len);
+}
+//检视len字节的串口数据，peek后的数据依然保留在串口接受缓冲区中
+function uart_peek(data, len)
+{
+	return $uf1(UART_HANDLE_PEEK, data, len);
+}
+//串口有多少字节数据可读
+function uart_bytes_available()
+{
+	return $uf1(UART_HANDLE_BYTES);
+}
+
+//向UI输出调试信息
+function log_to_ui(fmt_addr)
+{
+	local sfp_first;
+	sfp_first = $vmsp + 16;
+	return $uf2(TOOL_LOG, fmt_addr, sfp_first);
+}
+//更新UI
+function refresh_ui(){
+	return $uf2(TOOL_REFRESH_UI);
+}
+
+//设置控件的输入框显示内容
+function set_lineedit_text(index, text){
+	return $uf2(TOOL_SET_LINEEDIT, index, text);
+}
+
+
+

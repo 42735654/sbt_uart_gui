@@ -1,0 +1,497 @@
+/**########################################
+	标准库函数类
+*/
+
+
+/*
+	功能:		
+				求字符串长度(可参考C用法)。
+	输入参数:	
+				str_addr: 字符串的开始地址。
+	返回:		
+				字符串长度。
+
+*/
+function strlen(str_addr)
+{
+	local len;
+	len = 0;
+	while($ptr8s[str_addr, len] != 0)
+	{
+		len++;
+	}
+	
+	return len;
+}
+
+/*
+	功能:		
+				字符串复制(可参考C用法)。
+	输入参数:	
+				dest_addr: 目标字符串地址，src_addr：源字符串地址。
+	返回:		
+				目标字符串地址。
+
+*/
+function strcpy(dest_addr, src_addr)
+{
+	local i;
+	i = 0;
+	while($ptr8u[src_addr, i] != 0){
+		$ptr8u[dest_addr, i] = $ptr8u[src_addr, i];
+		i++;
+	}
+
+	$ptr8u[dest_addr, i] = 0;
+	
+	return dest_addr;
+}
+
+/*
+	功能:		
+				字符串连接(可参考C用法)。
+	输入参数:	
+				dest_addr: 目标字符串地址，src_addr：源字符串地址。
+	返回:		
+				目标字符串地址。
+
+*/
+function strcat(dest_addr, src_addr)
+{
+	local i, len;
+
+	i = 0;
+	len = strlen(dest_addr);
+
+	while($ptr8u[src_addr, i] != 0){
+		$ptr8u[dest_addr + len, i] = $ptr8u[src_addr, i];
+		i++;
+	}
+
+	$ptr8u[dest_addr + len, i] = 0;
+	
+	return dest_addr;
+}
+
+
+/*
+	功能:		
+				字符串比较(可参考C用法)。
+	输入参数:	
+				first_addr: 字符1串地址，last_addr：字符串2地址。
+	返回:		
+				若相等返回0。
+
+*/
+function strcmp(first_addr, last_addr)
+{
+	local i;
+	i = 0;
+	
+	while($ptr8u[first_addr, i] != 0 && $ptr8u[first_addr, i] == $ptr8u[last_addr, i]){
+		i++;
+	}
+
+	return ($ptr8u[first_addr, i] - $ptr8u[last_addr, i]);
+
+}
+
+
+/*
+	功能:		
+				字符串比较(可参考C用法)。
+	输入参数:	
+				first_addr: 字符1串地址，last_addr：字符串2地址， size：需要比较的字符长度。
+	返回:		
+				若相等返回0。
+
+*/
+function strncmp(first_addr, last_addr, size)
+{
+	local i;
+	i = 0;
+	
+	for(i=0; i<size; i++){
+		
+		if($ptr8u[first_addr, i] == $ptr8u[last_addr, i]){
+			continue;
+		}
+		else{
+			break;
+		}
+		
+	}
+	
+	if(i == size){
+		return 0;
+	}
+
+	return ($ptr8u[first_addr, i] - $ptr8u[last_addr, i]);
+
+}
+
+
+
+/*
+	功能:		
+				将一个数值转换成字符串连接到目标字符串。
+	输入参数:	
+				dest_addr: 目标字符串地址，num：数值。
+	返回:		
+				目标字符串地址。
+
+*/
+function strcat_num(dest_addr, num)
+{
+	local i, len, ch, div, j;
+
+	i = 10;
+	div = 1000000000;
+	len = strlen(dest_addr);
+
+	if(num == 0){//接0
+		$ptr8u[dest_addr + len] = 48;
+		return;
+	}
+	
+	while(num/div == 0){
+		i--;
+		div /= 10;
+	}
+	
+	if(num < 0){//负数
+		
+		$ptr8u[dest_addr + len] = 45;//加负号
+		i += 1;
+		j = 1;
+		num = 0 - num;
+	}
+	else{//正数
+		
+		j = 0;
+	}
+	
+
+	while(j < i){
+		$ptr8u[dest_addr + len, j] = num/div%10 + 48;
+		j++;
+		div /= 10;
+	}
+
+	return dest_addr;
+}
+
+
+/*
+	功能:		
+				格式化字符串(可参考C用法)。
+	输入参数:	
+				dest_addr: 字符串地址，num：数值。
+	返回:		
+				字符串地址。
+
+*/
+function sprintf(str_addr, fmt_addr)//arg1，arg2...
+{
+	local sfp_first, num, i, tmp, len;
+	//sfp_first为arg1的栈地址
+	sfp_first = $vmsp + 36;	
+	
+	
+	len = strlen(fmt_addr);
+	num = 0;
+	
+	for(i=0; i<len; i++){
+		//%s,参数为字符串
+		if($ptr8u[fmt_addr, i] == 37 && $ptr8u[fmt_addr, i+1] == 115){
+			strcat(str_addr, $ptr32[sfp_first, num]);
+			num++;
+			i++;
+		}
+		//%d,参数为数值
+		else if($ptr8u[fmt_addr, i] == 37 && $ptr8u[fmt_addr, i+1] == 100){
+			strcat_num(str_addr, $ptr32[sfp_first, num]);
+			num++;
+			i++;
+		}
+		else{
+			$ptr8u[str_addr, strlen(str_addr)] = $ptr8u[fmt_addr, i];
+		}
+	}
+	
+	return str_addr;
+}
+
+
+/*
+	功能:		
+				返回字符串中第一个不在指定字符串中出现的字符下标(可参考C用法)---主要为实现strtok_r。
+	输入参数:	
+				str_addr: 字符串地址，accept_addr：指定字符串。
+	返回:		
+				返回字符串s开头连续包含字符串accept内的字符数目。
+
+*/
+function strspn(str_addr, accept_addr)
+{
+	local count;
+	count = 0;
+
+	
+	for(; $ptr8s[str_addr] != 0; ++str_addr)
+	{
+		
+		for (; $ptr8s[accept_addr] != 0; ++accept_addr)
+		{
+			if ($ptr8s[str_addr] == $ptr8s[accept_addr])
+			{
+				break;
+			}
+		}
+
+		if ($ptr8s[accept_addr] == 0)
+		{
+			return count;
+		}
+
+		++count;
+	}
+
+	
+	return count;
+}
+
+
+/*
+	功能:		
+				依次检验字符串s1中的字符，当被检验字符在字符串s2中也包含时，则停止检验，
+				并返回该字符位置，空字符null不包括在内。(可参考C用法)----主要为实现strtok_r。
+	输入参数:	
+				s1_addr: 字符串1地址，s2_addr：字符串2地址。
+	返回:		
+				返回字符串s中第一个且不是accept内的字符的字符位置。
+
+*/
+function  strpbrk(s1_addr, s2_addr)
+{
+	local p;
+	p = s2_addr;
+
+	for(; $ptr8s[s1_addr] != 0; ++s1_addr)
+	{
+		p = s2_addr;
+		for(; $ptr8s[p] != 0; ++p)
+		{
+			if ($ptr8s[s1_addr] == $ptr8s[p])
+			{
+				return s1_addr;
+			}
+		}
+	}
+
+	return -1;
+}
+
+/*
+	功能:		
+				字符串提取(可参考C用法)。
+	输入参数:	
+				str_addr: 源字符串地址，delim_addr：分隔符字符串地址，olds_addr：辅助变量的地址，用以记录上次分割位置。
+	返回:		
+				提取出的字符串的地址。
+
+*/
+function strtok_r(str_addr, delim_addr, olds_addr)
+{
+	local token_addr;
+
+	//第一个参数若为0，接着上次的位置继续解析
+	if(str_addr == 0){
+		str_addr = $ptr32[olds_addr];
+	}
+	
+	if(str_addr < 0)
+		return -1;
+	
+	// 得到str中第一个且不是分隔符的字符位置。
+	str_addr += strspn(str_addr, delim_addr); 
+
+	if($ptr8s[str_addr] == 0)
+ 	{
+		$ptr32[olds_addr] = str_addr;
+		return -1;
+	}
+	
+	token_addr = str_addr;
+	
+	// 获取到delim中字符在字符串s中第一次出现的位置
+	str_addr = strpbrk(token_addr, delim_addr);
+
+	if (str_addr == -1){
+		$ptr32[olds_addr] = -1;
+	}	
+	else{
+		$ptr8s[str_addr] = 0;
+		$ptr32[olds_addr] = str_addr+1;
+	}
+
+	return token_addr;
+}
+
+
+/*
+	功能:		
+				字符串转32位有符号型(可参考C用法)。
+	输入参数:	
+				str_addr: 源字符串地址。
+	返回:		
+				字符串转换的数值。
+
+*/
+function atoi(str_addr)
+{
+	local sum, minus;
+
+	sum = 0;
+	if(str_addr >= 0 && $ptr8s[str_addr] != 0)
+
+	{
+		minus = false;
+		if($ptr8s[str_addr] == 43){//+
+			str_addr++;	
+		}
+		else if($ptr8s[str_addr] == 45)//-
+		{
+			minus = true;
+			str_addr++;
+		}
+		
+		while($ptr8s[str_addr] != 0)
+		{
+			if($ptr8s[str_addr] >= 48 && $ptr8s[str_addr] <= 57)//0-9
+			{
+				sum = sum*10+($ptr8s[str_addr] - 48);
+				str_addr++;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+
+	if(!minus)//正数
+		return sum;
+	else
+		return -sum;
+}
+
+/*
+	功能:		
+				将指定内存开始dest_addr的指定长度size的内存值设置为指定值val(可参考C用法)。
+	输入参数:	
+				dest_addr: 起始地址，val：需要设定的值，size：需要进行设置的内存长度。
+	返回:		
+				起始地址。
+
+*/
+function memset(dest_addr, val, size)
+{
+	while(size--){
+		$ptr8s[dest_addr + size] = val;
+	}
+	
+	return dest_addr;
+}
+
+
+/*
+	功能:		
+				内存拷贝(可参考C用法)。
+	输入参数:	
+				dest_addr: 目标地址，src_addr：源地址，size：长度。
+	返回:		
+				起始地址。
+
+*/
+function memcpy(dest_addr, src_addr, size)
+{
+	while(size--){
+		$ptr8s[dest_addr + size] = $ptr8s[src_addr + size];
+	}
+	
+	return dest_addr;
+}
+
+/*
+	功能:		
+				根据地址取出一个16位的数据值。
+	输入参数:	
+				value_addr：地址。
+	返回:		
+				数据值。
+
+*/
+function u16_get(value_addr)
+{
+	return $ptr8u[value_addr, 0] << 8 | $ptr8u[value_addr, 1] ;
+}
+
+
+/*
+	功能:		
+				将地址处存入一个16位的数据值。
+	输入参数:	
+				value_addr：地址，val：数据值。
+	返回:		
+				无。
+
+*/
+function u16_set(dest_addr, val)
+{
+	if (val > 0xffff)
+		return;
+
+	$ptr8u[dest_addr, 0] = (val>>8) & 0xff;
+	$ptr8u[dest_addr, 1] = val & 0xff;
+	
+}
+
+/*
+	功能:		
+				本地时间转utc时间。
+	输入参数:	
+				sec：时间戳，zone：时区。
+	返回:		
+				utc时间戳。
+
+*/
+function second_local_to_utc(sec, zone)
+{
+	return (sec-3600*zone);
+}
+
+/*
+	功能:		
+				utc时间转本地时间。
+	输入参数:	
+				sec：时间戳，zone：时区。
+	返回:		
+				本地时间戳。
+
+*/
+function second_utc_to_local(sec, zone)
+{
+	return (sec+3600*zone);	
+}
+
+function strchr(str, ch)
+{
+	local i;
+	for (i = 0;$ptr8u[str, i] != 0; i++){
+		if ($ptr8u[str, i] == ch){
+			return i;
+		}
+	}
+	return 0;
+}
