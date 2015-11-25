@@ -8,13 +8,13 @@
 #define IS_8B   0
 #define IS_16B  1
 #define IS_32B  2
-
+#define VM_MEM_SIZE (64 * 1024)
 class evm
 {
 private:
     uint16_t ip, sp, sfp;
     QByteArray bin_file_data;
-    u_int8_t mem[4096];
+    u_int8_t mem[VM_MEM_SIZE];
     int main_addr;
     u_int8_t *call_id;
     bool can_run;

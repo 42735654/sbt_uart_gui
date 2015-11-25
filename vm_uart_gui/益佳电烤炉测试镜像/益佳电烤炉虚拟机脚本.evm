@@ -53,6 +53,16 @@ $struct{
 }lock;
 $struct{
 	$member global8u 	type = 3;				
+	$member global8u   	index = 6;				
+	$member array8u    	name[40] = "室温";		
+}hourse_temp;
+$struct{
+	$member global8u 	type = 3;				
+	$member global8u   	index = 7;				
+	$member array8u    	name[40] = "定时";		
+}timer;
+$struct{
+	$member global8u 	type = 3;				
 	$member global8u   	index = 50;				
 	$member array8u    	name[40] = "WI-FI状态";		
 }wifi_stat;
@@ -74,6 +84,9 @@ function ui_init()
 	add_widget(&temp_unit);
 	add_widget(&heat_level);
 	add_widget(&wifi_stat);
+	add_widget(&lock);
+	add_widget(&hourse_temp);
+	add_widget(&timer);
 	ui_updata();
 }
 function checksum_calc(buf, len)
@@ -113,9 +126,10 @@ function cmd_handle(cmd)
 	if (cmd == CMD_SET_PARAM){
 		$$fmt = "参数设置";
 		log_to_ui(&fmt);
-		for (i = 0; i < 7; i++){
+		for (i = 0; i < 6; i++){
 			shared_uart_stat[i] = uart_recv_buf[i + 5];
 		}
+		shared_uart_stat[7] = uart_recv_buf[11];
 		ui_updata();
 	}else if (cmd == CMD_QUERY_STAT){
 		uart_reply();

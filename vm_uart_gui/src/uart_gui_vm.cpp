@@ -4,7 +4,10 @@
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QToolBar>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QFileDialog>
+#include <QMimeData>
 #define NEED_PARAM(n)  do { \
      if (argc != n){  \
         ERROR("错误的调用：func id=%u, argc=%u, argv[0]=%u" ,funcid, argc, argv[0]); \
@@ -28,6 +31,24 @@ uart_gui_vm::uart_gui_vm(uart_handler *hd):uart_gui(hd)
     menu_add_action("卸载bin文件", (CON_CALLBACK)&uart_gui_vm::on_close_bin);
     add_pb("保存配置", (CON_CALLBACK)&on_config_save);
     add_pb("读取配置", (CON_CALLBACK)&on_config_load);
+
+    setAcceptDrops(true);
+}
+void uart_gui_vm::dragEnterEvent(QDragEnterEvent *event){
+    if(event->mimeData()->hasFormat("text/uri-list"))
+                   event->acceptProposedAction();
+}
+void uart_gui_vm::dropEvent(QDropEvent *event){
+    QList<QUrl> u = event->mimeData()->urls();
+            if(u.isEmpty())
+                    return;
+            foreach(QUrl url, u) {
+                    QString file_name = url.toLocalFile();
+                    if (bin_open(file_name)){
+                        set_ui_by_arg(vm_uart_stat_addr);
+                    }
+                    return;
+            }
 }
 void uart_gui_vm::bin_close()
 {
@@ -39,11 +60,15 @@ void uart_gui_vm::bin_close()
     INFO("虚拟机卸载成功！");
 }
 
-bool uart_gui_vm::bin_open()
+bool uart_gui_vm::bin_open(QString path)
 {
-    last_bin_path = QFileDialog::getOpenFileName(this, tr("打开bin文件"),
+    if (!path.isEmpty()){
+        last_bin_path = path;
+    }else{
+        last_bin_path = QFileDialog::getOpenFileName(this, tr("打开bin文件"),
                                                  last_bin_path, "虚拟机镜像(*.bin)");
-    if (last_bin_path.isNull()){
+    }
+    if (last_bin_path.isEmpty()){
         return false;
     }else{
         bin_close();
@@ -111,11 +136,11 @@ int uart_gui_vm::do_evm_log(uint8_t argc, int32_t *argv)
 }
 void uart_gui_vm::save_config(QString path)
 {
-    if (path.isNull()){
+    if (path.isEmpty()){
         set_config_file_path(QFileDialog::getSaveFileName(this, tr("保存配置文件"),     \
                                                           config_file_path, "配置文件(*.dat)"));
     }
-    if (config_file_path.isNull()){
+    if (config_file_path.isEmpty()){
         return;
     }
     QFile config_file(config_file_path);
@@ -137,11 +162,11 @@ void uart_gui_vm::save_config(QString path)
 
 void uart_gui_vm::load_config(QString path)
 {
-    if (path.isNull()){
+    if (path.isEmpty()){
         set_config_file_path(QFileDialog::getOpenFileName(this, tr("打开配置文件"),
                                                             config_file_path, "配置文件(*.dat)"));
     }
-    if (config_file_path.isNull()){
+    if (config_file_path.isEmpty()){
         return;
     }
     QFile config_file(config_file_path);
@@ -164,6 +189,7 @@ int uart_gui_vm::vm_tools_handle(uint8_t funcid, uint8_t argc, int32_t *argv)
         return -1;
     }
     int ret = 0;
+    QByteArray hex;
     switch (argv[0]){
     case TOOL_LOG:
         ret = do_evm_log(argc - 1, argv + 1);
@@ -186,6 +212,10 @@ int uart_gui_vm::vm_tools_handle(uint8_t funcid, uint8_t argc, int32_t *argv)
                 break;
             }
         }
+        break;
+    case TOOL_DUMP_HEX:
+        hex.append((char *)(get_vm_mem_addr() + argv[1]), argv[2]);
+        INFO("%s", hex.toHex().data());
         break;
     default:
         break;
@@ -266,6 +296,8 @@ int uart_gui_vm::vm_uart_handle(uint8_t funcid, uint8_t argc, int32_t *argv)
     }
     return ret;
 }
+
+
 int32_t uart_gui_vm::call_user(uint8_t funcid, uint8_t argc, int32_t *argv)
 {
     int ret = 0;

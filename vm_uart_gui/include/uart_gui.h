@@ -28,7 +28,7 @@ extern uart_gui *p;
 #define WARN(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_WARN)
 #define ERROR(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_ERROR)
 #define DEBUG(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_DEBUG)
-#define UART_STAT_BUF_LEN   256
+#define UART_STAT_BUF_LEN   256 * 4
 struct uart_config{
     u_int8_t uart_stat_buf[UART_STAT_BUF_LEN];
     u_int8_t last_uart_stat_buf[UART_STAT_BUF_LEN];

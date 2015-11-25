@@ -49,7 +49,7 @@ int uart_handler::uart_send(u_int8_t *buf, u_int8_t len)
     }
     QByteArray s;
     s.append((char *)buf, len);
-    DEBUG("串口发送数据:%s", s.toHex().data());
+    DEBUG("串口发送数据:\n%s", s.toHex().data());
     return has_send_len;
 }
 

@@ -44,4 +44,5 @@ RESOURCES += \
 
 RC_FILE = resource/1.rc
 
+LIBS += -lWs2_32
 

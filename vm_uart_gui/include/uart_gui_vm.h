@@ -34,6 +34,7 @@ private:
         TOOL_LOG = 0,
         TOOL_REFRESH_UI = 1,
         TOOL_SET_LINEEDIT = 2,
+        TOOL_DUMP_HEX = 3,
     };
 public:
     enum{
@@ -44,14 +45,15 @@ public:
 
     uart_gui_vm(uart_handler *hd);
     void bin_close();
-    bool bin_open();
+    bool bin_open(QString path = QString());
     virtual ~uart_gui_vm();
     void show_info();
 
 protected:
     void load_config(QString path = QString());
     void save_config(QString path = QString());
-
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 private:
     void set_config_file_path(QString path){
         config_file_path = path;

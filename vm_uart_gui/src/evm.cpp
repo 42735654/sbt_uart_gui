@@ -358,9 +358,8 @@ void evm::embedvm_exec()
 void evm::reset_evm()
 {
     ip = 0xffff;
-    sp = 4092;
-    sfp = 4092;
-    memset(mem, 0 , sizeof(mem));
+    sp = VM_MEM_SIZE;
+    sfp = VM_MEM_SIZE;
     set_evm_ready(false);
 }
 
@@ -368,9 +367,14 @@ evm::evm()
 {
     reset_evm();
 }
+
 bool evm::load_evm(QString &path)
 {
     QFile bin(path);
+    if (bin.size() >= sizeof(mem)){
+        ERROR("文件太大了，目前最大只支持64k");
+        return false;
+    }
     if (bin.open(QIODevice::ReadOnly) != true){
         qDebug("bin file open failed;%s!", path.toLatin1().data());
         set_evm_ready(false);

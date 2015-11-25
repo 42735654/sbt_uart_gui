@@ -8,30 +8,35 @@
 #include <QToolBar>
 #include <QDir>
 #include <QMetaMethod>
+#include<Winsock2.h>
 //根据内存buf设置UI显示
 void uart_gui::set_ui_by_arg(u_int8_t *data)
 {
-    u_int8_t n, index;
+    int n;
+    u_int8_t index;
+    int *value = (int *)data;
     for (int i = 0; i < sw.swi_count; i++){
         if (sw.swis[i].swi->widget_type != WTYPE_LABEL_TEXTLINE){
             continue;
         }
         index = (sw.swis[i].swi)->index_in_arg;
-        n = data[index];
+        n = ntohl(value[index]);
         ((QLineEdit *)sw.swis[i].lineedit)->setText(QString::number(n));
     }
 }
 //根据UI界面值设置内存buf
 void uart_gui::set_arg_by_ui(u_int8_t *data)
 {
-    u_int8_t n, index;
+    int n;
+    u_int8_t index;
+    int *value = (int *)data;
     for (int i = 0; i < sw.swi_count; i++){
         if (sw.swis[i].swi->widget_type != WTYPE_LABEL_TEXTLINE){
             continue;
         }
         index = (sw.swis[i].swi)->index_in_arg;
         n = ((QLineEdit *)sw.swis[i].lineedit)->text().toInt();
-        data[index] = n;
+        value[index] = htonl(n);
         cfg.last_uart_stat_buf[index] = n;
     }
 }
@@ -121,7 +126,7 @@ uart_gui::uart_gui(uart_handler *hd)
     this->resize(900, 600);
 
     this->setAutoFillBackground(true);
-    window_bg.setBrush(QPalette::Background, QBrush(QPixmap(":/wbg.jpg")));
+    window_bg.setBrush(QPalette::Background, QBrush(QPixmap(":/wbg.png")));
     this->setPalette(window_bg);
 }
 //根据描述结构体添加控件
@@ -339,19 +344,19 @@ void uart_gui::init_base_widgets()
 
     menu =menuBar()->addMenu(tr("&功能"));
 }
-void uart_gui::on_port_index_currentIndexChanged(const QString &uart_port)
+void uart_gui::on_port_index_currentIndexChanged(const QString &port)
 {
     uhd->close_serial();
     if (port_index->currentIndex() == 0){
         return;
     }
-    bool x = uhd->open_serial_port(uart_port);
+    bool x = uhd->open_serial_port(port);
     if (x == true){
         uart_stat->setText("[串口开启成功]");
-        INFO("%s开启成功", uart_port.toLatin1().data());
+        INFO("%s开启成功", port.toLatin1().data());
     }else{
         uart_stat->setText("[串口开启失败]");
-        ERROR("%s开启失败", uart_port.toLatin1().data());
+        INFO("%s开启失败", port.toLatin1().data());
         uhd->serial = NULL;
        port_index->setCurrentIndex(0);
         return;
@@ -375,7 +380,7 @@ void uart_gui::add_widgets(QWidget *any_widgets, bool full_row)
     }else{
         role = QFormLayout::FieldRole;
     }
-     qDebug("count=%d, row=%d", count, rows);
+     //qDebug("count=%d, row=%d", count, rows);
 }
 void uart_gui::del_widgets(QWidget *any_widgets, bool full_row)
 {
