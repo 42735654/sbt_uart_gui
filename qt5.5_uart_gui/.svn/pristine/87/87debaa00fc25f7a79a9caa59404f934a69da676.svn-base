@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="wbg.jpg">windows_bg.jpg</file>
-        <file alias="pb_bg.png">pb_bg.png</file>
-    </qresource>
-</RCC>
