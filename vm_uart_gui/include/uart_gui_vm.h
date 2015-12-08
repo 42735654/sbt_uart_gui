@@ -3,8 +3,8 @@
 #include "uart_gui.h"
 #include "evm.h"
 #include "uart_handler.h"
-
-
+#include "select_bin_dg.h"
+#include <QFileInfo>
 class uart_gui_vm:public uart_gui, public evm
 {
 private:
@@ -12,6 +12,7 @@ private:
 
     QString last_bin_path;
     QString config_file_path = QString("uart-stat.dat");
+    select_bin_dg select_bin_win;
     enum{
         VMCB_VM_SET_PARAM = 0,
         VMCB_UART_HANDLE = 1,
@@ -50,8 +51,11 @@ public:
     void show_info();
 
 protected:
+    //QList<QString> binfile_list;
+    QList<QFileInfo> binfile_list;
     void load_config(QString path = QString());
     void save_config(QString path = QString());
+    void look_up_bin_in_dir(QString path);
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
 private:
@@ -125,6 +129,7 @@ public slots:
         memcpy(vm_uart_stat_addr, cfg.uart_stat_buf, sizeof(cfg.uart_stat_buf));
         set_ui_by_arg(vm_uart_stat_addr);
     }
+    void has_select_bin_file(QString filename);
 };
 
 #endif // UART_GUI_VM_H

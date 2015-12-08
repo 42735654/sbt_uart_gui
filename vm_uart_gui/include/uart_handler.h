@@ -18,7 +18,7 @@ public:
 public:
     uart_handler();
     virtual ~uart_handler();
-    virtual int uart_send(u_int8_t *buf, u_int8_t len);              //发送数据
+    virtual int uart_send(u_int8_t *buf, int len);              //发送数据
     bool open_serial_port(QString port_name);      //打开串口
     void close_serial();
     void init_serial_param();                      //初始化串口参数，派生类需重载

@@ -35,7 +35,7 @@ bool uart_handler::open_serial_port(QString port_name)
     return ret;
 }
 
-int uart_handler::uart_send(u_int8_t *buf, u_int8_t len)
+int uart_handler::uart_send(u_int8_t *buf, int len)
 {
     if (!serial){
         ERROR("请先打开一个串口！");
@@ -49,7 +49,7 @@ int uart_handler::uart_send(u_int8_t *buf, u_int8_t len)
     }
     QByteArray s;
     s.append((char *)buf, len);
-    DEBUG("串口发送数据:\n%s", s.toHex().data());
+    DEBUG("串口发送数据(len=%d):\n%s", len, s.toHex().data());
     return has_send_len;
 }
 

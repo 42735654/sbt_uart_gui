@@ -111,11 +111,10 @@ uart_gui::uart_gui(uart_handler *hd)
     //设置串口操作类
     uhd = hd;
     //UI布局相关
-    rows = 0;
-    count = 0;
+
     sw.swi_count = 0;
+
     text_browser_pause = false;
-    role = QFormLayout::LabelRole;
     memset(&cfg, 0, sizeof(cfg));
     memset(&sw, 0, sizeof(sw));
     //初始化框体布局
@@ -123,7 +122,7 @@ uart_gui::uart_gui(uart_handler *hd)
     //初始化基础控件
     init_base_widgets();
 
-    this->resize(900, 600);
+    this->resize(1050, 600);
 
     this->setAutoFillBackground(true);
     window_bg.setBrush(QPalette::Background, QBrush(QPixmap(":/wbg.png")));
@@ -150,7 +149,7 @@ void uart_gui::add_widget_by_info(status_widgets_info *swi)
 
     case WTYPE_LABEL_TEXTLINE:
             //WTYPE_LABEL_TEXTLINE需从第一列开始，否则需占位
-            if (count % 2){
+            if (next_spare_index % 2){
                 sw.swis[sw.swi_count].self_widget = new QLabel(this);
                 add_widgets(sw.swis[sw.swi_count].self_widget);
             }
@@ -364,48 +363,58 @@ void uart_gui::on_port_index_currentIndexChanged(const QString &port)
     uhd->init_serial_param();
     connect(uhd->serial, SIGNAL(readyRead()), this, SLOT(handle_uart_data()));
 }
+QPoint uart_gui::get_new_point(bool fullrow)
+{
+    QPoint newpoint(0, 0);
+
+    if (fullrow && next_spare_index % 2){
+        next_spare_index ++;
+    }
+    newpoint = QPoint(next_spare_index % 2 + (next_spare_index / (MAX_COL * 2)) * 2,
+                                       next_spare_index / 2 - (next_spare_index / (MAX_COL * 2)) * MAX_COL);
+    if (fullrow){
+        next_spare_index += 2;
+    }else{
+        next_spare_index ++;
+    }
+    return newpoint;
+}
+
 //向布局中添加一个控件
 void uart_gui::add_widgets(QWidget *any_widgets, bool full_row)
 {
+    QPoint pos = get_new_point(full_row);
     if (full_row == true){
-        widgets_layout->insertRow(rows, any_widgets);
-        count += 2;
+        widgets_layout->addWidget(any_widgets, pos.y(), pos.x(), 1, 2);
     }else{
-        widgets_layout->setWidget(rows, (QFormLayout::ItemRole)role, any_widgets);
-        count++;
+        widgets_layout->addWidget(any_widgets, pos.y(), pos.x(), 1, 1);
     }
-    if (count % 2 == 0){
-        rows++;
-        role = QFormLayout::LabelRole;
-    }else{
-        role = QFormLayout::FieldRole;
-    }
-     //qDebug("count=%d, row=%d", count, rows);
+    adjust_windows();
+    //qDebug("add widget to pos(%d,%d)", pos.x(), pos.y());
 }
+void uart_gui::adjust_windows()
+{
+    //动态调整布局
+    this->resize(900 + (next_spare_index / (2 * MAX_COL)) * 200, 600);
+    main_lay->setColumnStretch(0, 2 + (next_spare_index / (2 * MAX_COL)) * 2);
+}
+
 void uart_gui::del_widgets(QWidget *any_widgets, bool full_row)
 {
-    if (full_row == true){
-        widgets_layout->removeWidget(any_widgets);
-        count -= 2;
-    }else{
-        widgets_layout->removeWidget(any_widgets);
-        count --;
-    }
-    if (count % 2 != 0){
-        rows --;
-        role = QFormLayout::FieldRole;
-    }else{
-        role = QFormLayout::LabelRole;
-    }
-     qDebug("count=%d, row=%d", count, rows);
     delete any_widgets;
+    if (full_row){
+        next_spare_index -= 2;
+    }else{
+        next_spare_index --;
+    }
+    adjust_windows();
 }
 
 void uart_gui::init_layout()
 {
     for_cert = new QWidget(this);
     main_lay = new QGridLayout;
-    widgets_layout = new QFormLayout;
+    widgets_layout = new QGridLayout;
 
     main_lay->addLayout(widgets_layout, 0, 0, 1, 1);
     for_cert->setLayout(main_lay);
@@ -413,7 +422,7 @@ void uart_gui::init_layout()
 
     //控件列表与调试信息比例为1：3
     main_lay->setColumnStretch(0, 2);
-    main_lay->setColumnStretch(1, 11);
+    main_lay->setColumnStretch(1, 8);
 }
 
 uart_gui::~uart_gui()

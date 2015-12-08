@@ -1,4 +1,5 @@
 #include "uart_gui_vm.h"
+
 #include <QAction>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -8,6 +9,7 @@
 #include <QDropEvent>
 #include <QFileDialog>
 #include <QMimeData>
+#include <QListWidget>
 #define NEED_PARAM(n)  do { \
      if (argc != n){  \
         ERROR("错误的调用：func id=%u, argc=%u, argv[0]=%u" ,funcid, argc, argv[0]); \
@@ -22,33 +24,78 @@ uart_gui_vm::~uart_gui_vm()
 void uart_gui_vm::show_info()
 {
     INFO("下位机模拟程序 ver%s, 编译时间:%s %s", VERSION, __DATE__, __TIME__);
-    INFO("请加载虚拟机");
+    INFO("请加载bin文件");
 }
 
 uart_gui_vm::uart_gui_vm(uart_handler *hd):uart_gui(hd)
 {
-    menu_add_action("打开bin文件", (CON_CALLBACK)&uart_gui_vm::on_open_bin);
-    menu_add_action("卸载bin文件", (CON_CALLBACK)&uart_gui_vm::on_close_bin);
+    menu_add_action("打开bin文件", (CON_CALLBACK)&on_open_bin);
+    menu_add_action("卸载bin文件", (CON_CALLBACK)&on_close_bin);
     add_pb("保存配置", (CON_CALLBACK)&on_config_save);
     add_pb("读取配置", (CON_CALLBACK)&on_config_load);
-
+    connect(&select_bin_win, &select_bin_dg::select_bin_file, this, &has_select_bin_file);
     setAcceptDrops(true);
 }
 void uart_gui_vm::dragEnterEvent(QDragEnterEvent *event){
     if(event->mimeData()->hasFormat("text/uri-list"))
                    event->acceptProposedAction();
 }
+
+void uart_gui_vm::look_up_bin_in_dir(QString path)
+{
+    QDir dir(path);
+    foreach(QFileInfo mfi ,dir.entryInfoList())
+    {
+        if(mfi.isFile())
+        {
+            if (mfi.fileName().contains(".bin", Qt::CaseInsensitive) &&
+                    mfi.size() <= 64 * 1024){
+                binfile_list.push_front(mfi);
+            }
+        }else
+        {
+            if(mfi.fileName()=="." || mfi.fileName() == ".."){
+                continue;
+            }
+            look_up_bin_in_dir(mfi.absoluteFilePath());
+        }
+    }
+}
+void uart_gui_vm::has_select_bin_file(QString filename)
+{
+    binfile_list.clear();
+    if (!filename.isEmpty()){
+        bin_open(filename);
+    }
+}
+
 void uart_gui_vm::dropEvent(QDropEvent *event){
     QList<QUrl> u = event->mimeData()->urls();
             if(u.isEmpty())
                     return;
             foreach(QUrl url, u) {
                     QString file_name = url.toLocalFile();
-                    if (bin_open(file_name)){
-                        set_ui_by_arg(vm_uart_stat_addr);
+                    QFileInfo fi = QFileInfo(file_name);
+                    if (fi.isDir()){
+                        QMessageBox::StandardButton rb = QMessageBox::question(NULL, "请确认",
+                                      "遍历" + file_name + "?",
+                                      QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+                        if(rb == QMessageBox::No){
+                                break;
+                        }
+                        look_up_bin_in_dir(file_name);
+                        foreach(QFileInfo fi, binfile_list) {
+                            select_bin_win.add_item(fi.absoluteFilePath());
+                        }
+                        select_bin_win.exec();
+                    }else{
+                        if (bin_open(file_name)){
+                            set_ui_by_arg(vm_uart_stat_addr);
+                            break;
+                        }
                     }
-                    return;
             }
+            return;
 }
 void uart_gui_vm::bin_close()
 {

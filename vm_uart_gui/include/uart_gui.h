@@ -29,6 +29,7 @@ extern uart_gui *p;
 #define ERROR(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_ERROR)
 #define DEBUG(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_DEBUG)
 #define UART_STAT_BUF_LEN   256 * 4
+#define MAX_COL 18
 struct uart_config{
     u_int8_t uart_stat_buf[UART_STAT_BUF_LEN];
     u_int8_t last_uart_stat_buf[UART_STAT_BUF_LEN];
@@ -55,7 +56,7 @@ private:
     QLabel *uart_stat;                    //串口状态
 
     QGridLayout *main_lay;              //主布局
-    QFormLayout *widgets_layout;    //控件布局
+    QGridLayout *widgets_layout;    //控件布局
 
     QPalette window_bg;
     QTextStream* log_stream;
@@ -69,9 +70,8 @@ private:
     QMenu *menu;
 
     //自动添加控件的数据信息
-    int rows;
-    int role;
-    int count;
+
+    int next_spare_index;
     bool text_browser_pause;
 protected:
     //自定义布局列表
@@ -81,6 +81,7 @@ protected:
     uart_handler *uhd;                         //串口操作类
 
 protected:
+    void adjust_windows();
     void add_widget_by_info(status_widgets_info *swi);                      //根据描述添加控件
     void set_ui_by_arg(u_int8_t *data);                   //根据参数设置控件显示
     void set_arg_by_ui(u_int8_t *data);                   //根据UI控件设置参数
@@ -101,6 +102,7 @@ private:
     void init_log_file(QString filename);
     void init_base_widgets();       //初始化基础控件
     void init_layout();                     //初始化布局
+    QPoint get_new_point(bool fullrow);
 protected:
     uart_gui(uart_handler *hd);
     virtual ~uart_gui();
