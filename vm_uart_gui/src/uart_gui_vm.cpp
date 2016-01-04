@@ -1,5 +1,5 @@
 #include "uart_gui_vm.h"
-
+#include <time.h>
 #include <QAction>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -11,9 +11,9 @@
 #include <QMimeData>
 #include <QListWidget>
 #define NEED_PARAM(n)  do { \
-     if (argc != n){  \
-        ERROR("错误的调用：func id=%u, argc=%u, argv[0]=%u" ,funcid, argc, argv[0]); \
-        return -1;   \
+    if (argc != n){  \
+    ERROR("错误的调用：func id=%u, argc=%u, argv[0]=%u" ,funcid, argc, argv[0]); \
+    return -1;   \
     }       \
     }while(0)
 
@@ -26,6 +26,10 @@ void uart_gui_vm::show_info()
     INFO("下位机模拟程序 ver%s, 编译时间:%s %s", VERSION, __DATE__, __TIME__);
     INFO("请加载bin文件");
 }
+void uart_gui_vm::reload_bin()
+{
+    bin_open(last_bin_path);
+}
 
 uart_gui_vm::uart_gui_vm(uart_handler *hd):uart_gui(hd)
 {
@@ -33,12 +37,13 @@ uart_gui_vm::uart_gui_vm(uart_handler *hd):uart_gui(hd)
     menu_add_action("卸载bin文件", (CON_CALLBACK)&on_close_bin);
     add_pb("保存配置", (CON_CALLBACK)&on_config_save);
     add_pb("读取配置", (CON_CALLBACK)&on_config_load);
+    add_pb("重载bin文件", (CON_CALLBACK)&reload_bin);
     connect(&select_bin_win, &select_bin_dg::select_bin_file, this, &has_select_bin_file);
     setAcceptDrops(true);
 }
 void uart_gui_vm::dragEnterEvent(QDragEnterEvent *event){
     if(event->mimeData()->hasFormat("text/uri-list"))
-                   event->acceptProposedAction();
+        event->acceptProposedAction();
 }
 
 void uart_gui_vm::look_up_bin_in_dir(QString path)
@@ -71,31 +76,31 @@ void uart_gui_vm::has_select_bin_file(QString filename)
 
 void uart_gui_vm::dropEvent(QDropEvent *event){
     QList<QUrl> u = event->mimeData()->urls();
-            if(u.isEmpty())
-                    return;
-            foreach(QUrl url, u) {
-                    QString file_name = url.toLocalFile();
-                    QFileInfo fi = QFileInfo(file_name);
-                    if (fi.isDir()){
-                        QMessageBox::StandardButton rb = QMessageBox::question(NULL, "请确认",
-                                      "遍历" + file_name + "?",
-                                      QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-                        if(rb == QMessageBox::No){
-                                break;
-                        }
-                        look_up_bin_in_dir(file_name);
-                        foreach(QFileInfo fi, binfile_list) {
-                            select_bin_win.add_item(fi.absoluteFilePath());
-                        }
-                        select_bin_win.exec();
-                    }else{
-                        if (bin_open(file_name)){
-                            set_ui_by_arg(vm_uart_stat_addr);
-                            break;
-                        }
-                    }
+    if(u.isEmpty())
+        return;
+    foreach(QUrl url, u) {
+        QString file_name = url.toLocalFile();
+        QFileInfo fi = QFileInfo(file_name);
+        if (fi.isDir()){
+            QMessageBox::StandardButton rb = QMessageBox::question(NULL, "请确认",
+                                                                   "搜索" + file_name + "?",
+                                                                   QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+            if(rb == QMessageBox::No){
+                break;
             }
-            return;
+            look_up_bin_in_dir(file_name);
+            foreach(QFileInfo fi, binfile_list) {
+                select_bin_win.add_item(fi.absoluteFilePath());
+            }
+            select_bin_win.exec();
+        }else{
+            if (bin_open(file_name)){
+                set_ui_by_arg(vm_uart_stat_addr);
+                break;
+            }
+        }
+    }
+    return;
 }
 void uart_gui_vm::bin_close()
 {
@@ -113,7 +118,7 @@ bool uart_gui_vm::bin_open(QString path)
         last_bin_path = path;
     }else{
         last_bin_path = QFileDialog::getOpenFileName(this, tr("打开bin文件"),
-                                                 last_bin_path, "虚拟机镜像(*.bin)");
+                                                     last_bin_path, "虚拟机镜像(*.bin)");
     }
     if (last_bin_path.isEmpty()){
         return false;
@@ -197,21 +202,21 @@ void uart_gui_vm::save_config(QString path)
     }
     int n =  config_file.write((char *)&cfg, sizeof(uart_config));
 
-   if (n < sizeof(uart_config)){
+    if (n < sizeof(uart_config)){
         ERROR("写配置文件出错，请求%d字节，写入%d字节", sizeof(uart_config), n);
-   }else{
+    }else{
         config_file.flush();
         INFO("保存配置成功！");
-   }
-//   INFO(" save cfg.uart_stat_buf[0]=%d", cfg.uart_stat_buf[0]);
-   config_file.close();
+    }
+    //   INFO(" save cfg.uart_stat_buf[0]=%d", cfg.uart_stat_buf[0]);
+    config_file.close();
 }
 
 void uart_gui_vm::load_config(QString path)
 {
     if (path.isEmpty()){
         set_config_file_path(QFileDialog::getOpenFileName(this, tr("打开配置文件"),
-                                                            config_file_path, "配置文件(*.dat)"));
+                                                          config_file_path, "配置文件(*.dat)"));
     }
     if (config_file_path.isEmpty()){
         return;
@@ -228,7 +233,7 @@ void uart_gui_vm::load_config(QString path)
     }
     config_file.close();
     INFO("读取配置成功！");
-//    INFO("load cfg.uart_stat_buf[0]=%d", cfg.uart_stat_buf[0]);
+    //    INFO("load cfg.uart_stat_buf[0]=%d", cfg.uart_stat_buf[0]);
 }
 int uart_gui_vm::vm_tools_handle(uint8_t funcid, uint8_t argc, int32_t *argv)
 {
@@ -246,6 +251,9 @@ int uart_gui_vm::vm_tools_handle(uint8_t funcid, uint8_t argc, int32_t *argv)
             set_ui_by_arg(vm_uart_stat_addr);
             memcpy(cfg.last_uart_stat_buf, vm_uart_stat_addr, sizeof(cfg.last_uart_stat_buf));
         }
+        break;
+    case TOOL_GET_TIME:
+        ret = time(NULL);
         break;
     case TOOL_SET_LINEEDIT:
         NEED_PARAM(3);
@@ -284,7 +292,7 @@ int uart_gui_vm::vm_set_param(uint8_t funcid, uint8_t argc, int32_t *argv)
         vm_uart_stat_addr = (get_vm_mem_addr()+ argv[2]);
         break;
     case SET_PARAM_UI:
-         //INFO("SET_PARAM_UI:%d,argc=%u",funcid, argc);
+        //INFO("SET_PARAM_UI:%d,argc=%u",funcid, argc);
         NEED_PARAM(2);
         data = (char *)(get_vm_mem_addr()+ argv[1]);
         vm_swi.widget_type = data[0];
@@ -316,7 +324,7 @@ int uart_gui_vm::vm_uart_handle(uint8_t funcid, uint8_t argc, int32_t *argv)
     switch (argv[0]){
     case UART_HANDLE_SEND:
         NEED_PARAM(3);
-       ret = uhd->uart_send(get_vm_mem_addr()+ argv[1], argv[2]);
+        ret = uhd->uart_send(get_vm_mem_addr()+ argv[1], argv[2]);
         break;
     case UART_HANDLE_READ:
         ret = uhd->serial->read(data, argv[2]);

@@ -149,8 +149,13 @@ void uart_gui::add_widget_by_info(status_widgets_info *swi)
 
     case WTYPE_LABEL_TEXTLINE:
             //WTYPE_LABEL_TEXTLINE需从第一列开始，否则需占位
+//            if (count % 2){
+//                sw.swis[sw.swi_count].self_widget = new QLabel(this);
+//                add_widgets(sw.swis[sw.swi_count].self_widget);
+//            }
             if (next_spare_index % 2){
-                sw.swis[sw.swi_count].self_widget = new QLabel(this);
+                sw.swis[sw.swi_count].self_widget = new QLabel;
+                set_text_style(sw.swis[sw.swi_count].self_widget);
                 add_widgets(sw.swis[sw.swi_count].self_widget);
             }
             sw.swis[sw.swi_count].label = new QLabel(swi->widget_name, this);

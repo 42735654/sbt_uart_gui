@@ -36,6 +36,7 @@ private:
         TOOL_REFRESH_UI = 1,
         TOOL_SET_LINEEDIT = 2,
         TOOL_DUMP_HEX = 3,
+        TOOL_GET_TIME = 4,
     };
 public:
     enum{
@@ -120,6 +121,7 @@ public slots:
         memcpy(cfg.uart_stat_buf, vm_uart_stat_addr, sizeof(cfg.uart_stat_buf));
         save_config();
     }
+    void reload_bin();
     void on_config_load(){
         if (!evm_ready()){
             ERROR("并没有加载虚拟机");
