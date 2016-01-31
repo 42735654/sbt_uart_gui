@@ -28,13 +28,12 @@ public:
     bool evm_ready(){
         return can_run;
     }
-    void set_call_id(u_int8_t id){
-        *call_id = id;
-    }
+
 protected:
     u_int8_t *get_vm_mem_addr(){
         return mem;
     }
+
     void reset_evm();
     virtual int32_t call_user(uint8_t funcid, uint8_t argc, int32_t *argv) = 0;
     int32_t mem_read(uint16_t addr, u_int8_t bits);
@@ -48,6 +47,9 @@ protected:
         call_id = addr;
     }
 private:
+    void set_call_id(u_int8_t id){
+        *call_id = id;
+    }
     int get_main_addr(){
         return bin_file_data.indexOf(BEFORE_MAIN_FLAG_STR) + sizeof(BEFORE_MAIN_FLAG_STR);
     }

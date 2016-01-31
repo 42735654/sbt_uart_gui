@@ -27,7 +27,7 @@ SOURCES += $${COM_SRC_DIR}/main.cpp \
 			 $${COM_SRC_DIR}/uart_gui.cpp \
 			$${COM_SRC_DIR}/evm.cpp \
 			$${COM_SRC_DIR}/uart_gui_vm.cpp \
-			$${COM_SRC_DIR}/select_bin_dg.cpp
+			$${COM_SRC_DIR}/select_bin_dg.cpp \
 
 
 
@@ -38,7 +38,7 @@ HEADERS  += $${COM_INC_DIR}/uart_gui.h \
 			$${COM_INC_DIR}/type_def.h \
 			$${COM_INC_DIR}/evm.h \
 			$${COM_INC_DIR}/uart_gui_vm.h \
-			$${COM_INC_DIR}/select_bin_dg.h
+			$${COM_INC_DIR}/select_bin_dg.h \
 
 RESOURCES += \
     resource/resource.qrc

@@ -12,9 +12,7 @@ class uart_handler
 {
 public:
     QSerialPort *serial;        //qt的串口类
-    u_int8_t arg[256];              //项目相关参数，对应到ui中的控件显示
-    u_int8_t last_arg[256];              //备份参数
-        int btl;
+    int btl;
 public:
     uart_handler();
     virtual ~uart_handler();

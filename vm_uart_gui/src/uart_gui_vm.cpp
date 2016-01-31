@@ -24,19 +24,34 @@ uart_gui_vm::~uart_gui_vm()
 void uart_gui_vm::show_info()
 {
     INFO("下位机模拟程序 ver%s, 编译时间:%s %s", VERSION, __DATE__, __TIME__);
-    INFO("请加载bin文件");
+    //INFO("请加载bin文件");
 }
 void uart_gui_vm::reload_bin()
 {
     bin_open(last_bin_path);
 }
+void uart_gui_vm::show_all_apis()
+{
+
+}
+
+void uart_gui_vm::show_change_logs()
+{
+
+}
 
 uart_gui_vm::uart_gui_vm(uart_handler *hd):uart_gui(hd)
 {
-    menu_add_action("打开bin文件", (CON_CALLBACK)&on_open_bin);
-    menu_add_action("卸载bin文件", (CON_CALLBACK)&on_close_bin);
+//    menu_add_action("打开bin文件", (CON_CALLBACK)&on_open_bin);
+//    menu_add_action("卸载bin文件", (CON_CALLBACK)&on_close_bin);
+//    menu_add_action("支持的虚拟机接口", (CON_CALLBACK)&show_all_apis);
+    menu_add_action("版本信息", (CON_CALLBACK)&show_info);
+//    menu_add_action("改动日志", (CON_CALLBACK)&show_change_logs);
+
     add_pb("保存配置", (CON_CALLBACK)&on_config_save);
     add_pb("读取配置", (CON_CALLBACK)&on_config_load);
+    add_pb("加载bin文件", (CON_CALLBACK)&on_open_bin);
+    add_pb("卸载bin文件", (CON_CALLBACK)&on_close_bin);
     add_pb("重载bin文件", (CON_CALLBACK)&reload_bin);
     connect(&select_bin_win, &select_bin_dg::select_bin_file, this, &has_select_bin_file);
     setAcceptDrops(true);
@@ -177,13 +192,13 @@ int uart_gui_vm::do_evm_log(uint8_t argc, int32_t *argv)
         memcpy((u_int8_t *)buf_tmp, (u_int8_t *)buf+num*240, 240);
         ch_replace((char *)buf_tmp, '\n', ' ');
         ch_replace((char *)buf_tmp, '\r', ' ');
-        INFO("[VM]%s",  buf_tmp);
+        VM_INFO("%s",  buf_tmp);
         num++;
         len -= 240;
     }
     ch_replace((char *)(buf+num*240), '\n', ' ');
     ch_replace((char *)(buf+num*240), '\r', ' ');
-    INFO("[VM]%s", buf+num*240);
+    VM_INFO("%s", buf+num*240);
     return 0;
 }
 void uart_gui_vm::save_config(QString path)
@@ -259,11 +274,23 @@ int uart_gui_vm::vm_tools_handle(uint8_t funcid, uint8_t argc, int32_t *argv)
         NEED_PARAM(3);
         for (int i = 0; i < sw.swi_count; i++){
             if (sw.swis[i].swi->index_in_arg == argv[1]){
-                if (sw.swis[i].swi->widget_type != WTYPE_LABEL_TEXTLINE){
-                    WARN("不能设置该控件！");
-                }else{
-                    ((QLineEdit *)sw.swis[i].lineedit)->setText((char *)(get_vm_mem_addr()+ argv[2]));
+                switch (sw.swis[i].swi->widget_type){
+                    case WTYPE_LABEL_TEXTLINE:
+                        ((QLineEdit *)sw.swis[i].lineedit)->setText((char *)(get_vm_mem_addr()+ argv[2]));
+                        break;
+                case WTYPE_PUSHBOTTON:
+                         ((QPushButton *)sw.swis[i].self_widget)->setText((char *)(get_vm_mem_addr()+ argv[2]));
+                        break;
+                default:
+                    break;
+
                 }
+
+//                if (sw.swis[i].swi->widget_type == WTYPE_LABEL_TEXTLINE){
+//                    WARN("不能设置该控件！");
+//                }else if (){
+
+//                }
                 break;
             }
         }

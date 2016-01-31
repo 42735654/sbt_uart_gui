@@ -24,12 +24,14 @@
 #include "uart_handler.h"
 class uart_gui;
 extern uart_gui *p;
+
 #define INFO(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_INFO)
 #define WARN(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_WARN)
 #define ERROR(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_ERROR)
 #define DEBUG(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_DEBUG)
+#define VM_INFO(...)       p->__log_to_ui(QString("").sprintf(__VA_ARGS__), LOG_TYPE_VM_INFO)
 #define UART_STAT_BUF_LEN   256 * 4
-#define MAX_COL 18
+#define MAX_COL 20
 struct uart_config{
     u_int8_t uart_stat_buf[UART_STAT_BUF_LEN];
     u_int8_t last_uart_stat_buf[UART_STAT_BUF_LEN];
@@ -50,6 +52,7 @@ private:
 
     QCheckBox *send_hex;               //发送16进制
     QCheckBox *if_log_file;             //输出日志到文件
+    QCheckBox *if_dump_qt_log;             //输出日志到文件
 
     QPushButton *pb_pause;                              //暂停输出
 

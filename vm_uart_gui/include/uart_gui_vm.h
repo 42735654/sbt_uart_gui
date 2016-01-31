@@ -63,7 +63,8 @@ private:
     void set_config_file_path(QString path){
         config_file_path = path;
     }
-
+    void show_all_apis();
+    void show_change_logs();
     void on_open_bin(){
         if (bin_open()){
             set_ui_by_arg(vm_uart_stat_addr);

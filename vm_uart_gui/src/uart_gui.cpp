@@ -215,14 +215,22 @@ void uart_gui::on_checkbox_log_to_file()
 }
 void uart_gui::text_browser_text_changed()
 {
-    uart_log->moveCursor(QTextCursor::End);
+    //uart_log->moveCursor(QTextCursor::End);
 }
 
 void uart_gui::__log_to_ui(QString s, int type)
 {
+    if (type !=LOG_TYPE_VM_INFO && !if_dump_qt_log->isChecked()){
+        return;
+    }
     QMutexLocker locker(&tb_mutex);
     QString __log;
     switch(type){
+        case LOG_TYPE_VM_INFO:
+            uart_log->setTextColor(QColor(200, 200, 200));
+            uart_log->setFontPointSize(13);
+            __log = "[VM INFO]";
+            break;
         case LOG_TYPE_INFO:
             uart_log->setTextColor(QColor(200, 200, 200));
             uart_log->setFontPointSize(13);
@@ -320,19 +328,24 @@ void uart_gui::init_base_widgets()
     set_text_style(uart_stat);
     add_widgets(uart_stat);
 
-    send_text = new QLineEdit(this);
-    set_lineedit_background_pic(send_text);
-    add_widgets(send_text, true);
-
-    send_hex = new QCheckBox("发送16进制", this);
-    set_text_style(send_hex);
-    add_widgets(send_hex);
-
     if_log_file = new QCheckBox("输出到文件", this);
     set_text_style(if_log_file);
     //if_log_file->setChecked(true);
     connect(if_log_file, SIGNAL(clicked(bool)), this, SLOT(on_checkbox_log_to_file()));
     add_widgets(if_log_file);
+
+    if_dump_qt_log = new QCheckBox("主程序调试", this);
+    set_text_style(if_dump_qt_log);
+    //connect(if_dump_qt_log, SIGNAL(clicked(bool)), this, SLOT(on_checkbox_log_to_file()));
+    add_widgets(if_dump_qt_log);
+
+    send_hex = new QCheckBox("发送16进制", this);
+    set_text_style(send_hex);
+    add_widgets(send_hex);
+
+    send_text = new QLineEdit(this);
+    set_lineedit_background_pic(send_text);
+    add_widgets(send_text, true);
 
     add_pb("发送", &send_line_text);
     add_pb("设置到设备", &on_set_pushed);
@@ -343,10 +356,10 @@ void uart_gui::init_base_widgets()
     QPalette palette=uart_log->palette();
     palette.setBrush(QPalette::Base, QBrush(Qt::NoBrush));
     uart_log->setPalette(palette);
-    connect(uart_log, SIGNAL(textChanged()), this, SLOT(text_browser_text_changed()));
+    //connect(uart_log, SIGNAL(textChanged()), this, SLOT(text_browser_text_changed()));
     main_lay->addWidget(uart_log, 0, 1, 1, 1);
 
-    menu =menuBar()->addMenu(tr("&功能"));
+    menu =menuBar()->addMenu("菜单");
 }
 void uart_gui::on_port_index_currentIndexChanged(const QString &port)
 {
@@ -400,7 +413,7 @@ void uart_gui::add_widgets(QWidget *any_widgets, bool full_row)
 void uart_gui::adjust_windows()
 {
     //动态调整布局
-    this->resize(900 + (next_spare_index / (2 * MAX_COL)) * 200, 600);
+    this->resize(1000 + (next_spare_index / (2 * MAX_COL)) * 200, 620);
     main_lay->setColumnStretch(0, 2 + (next_spare_index / (2 * MAX_COL)) * 2);
 }
 

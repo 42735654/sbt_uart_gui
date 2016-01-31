@@ -6,8 +6,6 @@ uart_handler::uart_handler()
 {
     serial = NULL;
     btl = QSerialPort::Baud9600;
-    memset(arg, 0, sizeof(arg));
-    memcpy(last_arg, arg, sizeof(arg));
 }
 
 uart_handler::~uart_handler()

@@ -25,7 +25,7 @@ typedef signed char int8_t;
 #define LOG_TYPE_WARN   2
 #define LOG_TYPE_ERROR   3
 #define LOG_TYPE_DEBUG   4
-
+#define LOG_TYPE_VM_INFO   5
 #pragma pack (1)
 typedef struct{
     u_int8_t widget_type;
