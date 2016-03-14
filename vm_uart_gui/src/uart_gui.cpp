@@ -438,7 +438,7 @@ void uart_gui::init_layout()
     for_cert->setLayout(main_lay);
     this->setCentralWidget(for_cert);
 
-    //控件列表与调试信息比例为1：3
+    //控件列表与调试信息比例为1：4
     main_lay->setColumnStretch(0, 2);
     main_lay->setColumnStretch(1, 8);
 }
