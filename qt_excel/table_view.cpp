@@ -1,5 +1,4 @@
 #include "table_view.h"
-#include "ui_table_view.h"
 
 table_view::table_view(int x, int y)
 {
