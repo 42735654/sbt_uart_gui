@@ -15,10 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     table_view.cpp \
-    excel_handler.cpp
+    excel_handler.cpp \
+    sheet.cpp
 
 HEADERS  += mainwindow.h \
     table_view.h \
-    excel_handler.h
+    excel_handler.h \
+    block_data.h \
+    sheet.h
 
 FORMS    += mainwindow.ui
