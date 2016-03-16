@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    excel_handler eh("F:\\4.xlsx");
-    eh.set_excel_value(1, 7, 7, "hello world!");
+    MainWindow w;
+    w.show();
     return a.exec();
 }
